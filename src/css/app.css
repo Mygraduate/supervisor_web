@@ -1,0 +1,154 @@
+/*
+* @Author: Rhymedys
+* @Date:   2017-02-07 15:47:17
+* @Last Modified by:   Rhymedys
+* @Last Modified time: 2017-02-07 16:51:15
+*/
+.cc-App {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+}
+
+/*
+=======================================================
+header
+=======================================================*/
+.headerWrapper {
+	height: 80px;
+}
+.header {
+	height: 80px;
+	background-color: #20a0ff;
+	color: #fff;
+	top: 0;
+	left: 0;
+	width: 100%;
+	line-height: 80px;
+	z-index: 100;
+	position: relative;
+}
+.header .container {
+	padding: 0 30px;
+	margin: 0 auto;
+	height: 100%;
+	box-sizing: border-box;
+}
+.header h1 {
+	margin: 0;
+	float: left;
+	font-size: 32px;
+	font-weight: 400;
+}
+.header .welcome {
+	float: right;
+	height: 100%;
+	line-height: 80px;
+	background: transparent;
+	padding: 0;
+	margin: 0;
+}
+.welcome-icon {
+	height: 20px;
+	margin-right: 13px;
+}
+.welcome-msg {
+	text-decoration: none;
+	color: #fff;
+	display: block;
+	padding: 0 20px;
+}
+
+/*
+=======================================================
+main
+=======================================================*/
+.main-cnt {
+
+	/*flex-grow: 1;*/
+
+	/*margin-top: -80px;
+	padding: 80px 0 120px;*/
+	box-sizing: border-box;
+	height: -moz-calc(100%-200px);
+	height: -webkit-calc(100% - 200px);
+	height: calc(100% - 200px);
+	overflow: auto;
+}
+.page-compoment {
+
+	/*        padding: 0 30px;
+	*/
+	height: 100%;
+	margin: 0 auto;
+	width: 100%;
+	display: flex;
+}
+.page-compoment-p {
+	padding-left: 0 !important;        /*padding-bottom: 95px !important;*/
+	box-sizing: border-box !important;
+}
+.cc-row {
+	background-color: #eef1f6;
+	position: relative;
+	box-sizing: border-box;
+	float: left;
+	min-width: 300px;
+}
+.left-row .col {
+	width: 100% !important;        /*float: left !important;*/
+}
+.el-menu-icon {
+	width: 21px;
+	margin-right: 15px;
+	margin-top: -3px;
+}
+.cc-row-right {
+	flex-grow: 1;
+	overflow: auto;
+}
+
+/*
+=======================================================
+foot
+=======================================================*/
+.footer {
+	height: 120px;
+	background-color: #324057;
+	color: #a4aebd;
+	width: 100%;
+	z-index: 1000;        /*margin-top: -120px;*/
+
+	/*position: absolute;
+	bottom: 0;*/
+}
+.footer * {
+	word-spacing: 0;
+}
+.foot-container {
+	height: 100%;
+	box-sizing: border-box;
+	padding: 0 30px;
+	margin: 0 auto;
+}
+.footer-main {
+	font-size: 0;
+	padding-top: 40px;
+	display: inline-block;
+}
+.footer-main-title {
+	line-height: 1;
+	font-size: 22px;
+	margin: 0;
+}
+.footer-main-subtitle {
+	display: inline-block;
+	margin: 12px 18px 0 0;
+	line-height: 1;
+	font-size: 12px;
+	color: #768193;
+}
+.footer-social {
+	float: right;
+	line-height: 120px;
+}

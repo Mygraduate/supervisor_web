@@ -1,0 +1,14 @@
+/*
+* @Author: Rhymedys
+* @Date:   2017-02-06 10:28:47
+* @Last Modified by:   Rhymedys
+* @Last Modified time: 2017-02-07 16:52:46
+*/
+.tempform {
+	position: absolute !important;
+	right: 20px;
+	width: auto !important;
+}
+.tempform-table {
+	margin-top: 13px;
+}
