@@ -1,23 +1,20 @@
 /*
  * @Author: Rhymedys
  * @Date:   2017-02-02 16:22:21
- * @Last Modified by:   Rhymedys
- * @Last Modified time: 2017-02-07 17:10:18
+ * @Last Modified by: Rhymedys
+ * @Last Modified time: 2017-03-30 15:28:21
  */
 
 'use strict';
-require('./index.css');
+require('./Index.css');
+import api from '../../utils/Api';
 import commonUtils from '../../utils/CommonUtils';
-import timeUtils from '../../utils/TimeUtils';
 
-
-
-//vuex
+//状态集中管理
 import {
   mapState,
   mapGetters,
-  mapActions,
-  mapMutations
+  mapActions
 } from 'vuex';
 import * as mActions from '../../vuex/Actions';
 import * as mGetters from '../../vuex/Getters';
@@ -25,127 +22,47 @@ import * as mMutations from '../../vuex/Mutations';
 
 
 export default {
-  name: 'cc-index',
-  data() {
+  name: 'index',
+  data: function() {
     return {
-      searchInput: '',
-      tempTableData: [{
-        course: '2016-05-03',
-        courseContent: '告诉我你爱我',
-        teachWay: '我就不',
-        professional: '告诉我你爱我',
-
-        courseClass: '告诉我你爱我',
-        teachTea: '告诉我你爱我',
-        week: '告诉我你爱我',
-        listenerTime: '告诉我你爱我'
-      }, {
-        course: '2016-05-03',
-        courseContent: '告诉我你爱我',
-        teachWay: '我就不',
-        professional: '告诉我你爱我',
-
-        courseClass: '告诉我你爱我',
-        teachTea: '告诉我你爱我',
-        week: '告诉我你爱我',
-        listenerTime: '告诉我你爱我'
-      }, {
-        course: '2016-05-03',
-        courseContent: '告诉我你爱我',
-        teachWay: '我就不',
-        professional: '告诉我你爱我',
-
-        courseClass: '告诉我你爱我',
-        teachTea: '告诉我你爱我',
-        week: '告诉我你爱我',
-        listenerTime: '告诉我你爱我'
-      }, {
-        course: '2016-05-03',
-        courseContent: '告诉我你爱我',
-        teachWay: '我就不',
-        professional: '告诉我你爱我',
-
-        courseClass: '告诉我你爱我',
-        teachTea: '告诉我你爱我',
-        week: '告诉我你爱我',
-        listenerTime: '告诉我你爱我'
-      }, {
-        course: '2016-05-03',
-        courseContent: '告诉我你爱我',
-        teachWay: '我就不',
-        professional: '告诉我你爱我',
-
-        courseClass: '告诉我你爱我',
-        teachTea: '告诉我你爱我',
-        week: '告诉我你爱我',
-        listenerTime: '告诉我你爱我'
-      }, {
-        course: '2016-05-03',
-        courseContent: '告诉我你爱我',
-        teachWay: '我就不',
-        professional: '告诉我你爱我',
-
-        courseClass: '告诉我你爱我',
-        teachTea: '告诉我你爱我',
-        week: '告诉我你爱我',
-        listenerTime: '告诉我你爱我'
-      }, {
-        course: '2016-05-03',
-        courseContent: '告诉我你爱我',
-        teachWay: '我就不',
-        professional: '告诉我你爱我',
-
-        courseClass: '告诉我你爱我',
-        teachTea: '告诉我你爱我',
-        week: '告诉我你爱我',
-        listenerTime: '告诉我你爱我'
-      }],
-      multipleSelection: []
+      transitionName: 'slide-left'
     }
   },
   beforeCreate: function() {
-    commonUtils.log("--Index.Vue--Lifecycle:beforeCreate");
+
   },
   created: function() {
-    commonUtils.log("--Index.Vue--Lifecycle:created");
+
+    if (this.$route.name === undefined||this.$route.name==='index') {
+      commonUtils.log(this)
+      this.$router.push('indexHome')
+    }
   },
   beforeMount: function() {
-    commonUtils.log("--Index.Vue--Lifecycle:beforeMount");
+
   },
   mounted: function() {
-    commonUtils.log("--Index.Vue--Lifecycle:mounted", this);
+
   },
   updated: function() {
-    commonUtils.log("--Index.Vue--Lifecycle:updated");
 
   },
   activated: function() {
-    commonUtils.log("--Index.Vue--Lifecycle:activated");
+
   },
   deactivated: function() {
-    commonUtils.log("--Index.Vue--Lifecycle:deactivated");
+
   },
   beforeDestroy: function() {
-    commonUtils.log("--Index.Vue--Lifecycle:beforeDestroy");
+
   },
   destroyed: function() {
-    commonUtils.log("--Index.Vue--Lifecycle:destroyed");
-  },
-  components: {
 
   },
   computed: {
 
   },
   methods: {
-    handleSerchClick: function(ev) {
 
-    }
-  },
-  //校验数据类型
-  props: {
-    // mData: {
-    //   type: Array
-    // },
   }
 }

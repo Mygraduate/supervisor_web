@@ -1,6 +1,6 @@
 <template>
   <div class="index-box">
-
+adfasdf
   </div>
 
 </template>
