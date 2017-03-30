@@ -22,7 +22,7 @@
                     <el-row class="tac left-row">
                         <el-col v-bind:span="8" class="col">
                             <el-menu default-active="1" class="el-menu-vertical-demo fs20">
-                                <router-link to="index">
+                                <router-link to="indexHome">
                                     <el-menu-item index="1"><img class="el-menu-icon index-icon" src="../../assets/iconIndexBlack.png">主页</el-menu-item>
                                 </router-link>
                                 <router-link to="progressPage">
