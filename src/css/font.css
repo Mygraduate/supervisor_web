@@ -76,3 +76,15 @@
 .fs26{
 	font-size: 26px !important;
 }
+
+.lh1{
+	line-height: 1;
+}
+
+.lh2{
+	line-height: 2;
+}
+
+.fw-bold{
+	font-weight: bold;
+}

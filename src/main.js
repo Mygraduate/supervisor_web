@@ -8,11 +8,13 @@ import commonUtils from './utils/CommonUtils'
 import store from './vuex/Store'
 import ElementUI from 'element-ui'
 
-import './css/color.css'
-import './css/common.css'
-import './css/font.css'
-import './css/main.css'
-import 'element-ui/lib/theme-default/index.css'
+import './css/color'
+import './css/common.less'
+import './css/font'
+import './css/main'
+import './css/margin'
+import './css/padding'
+import 'element-ui/lib/theme-default/index'
 
 // App为html的首页入口 全局Vue对象配置
 commonUtils.log(router)

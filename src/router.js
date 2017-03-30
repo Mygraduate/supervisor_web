@@ -87,7 +87,6 @@ router.beforeEach(function (to, from, next) {
   commonUtils.log('--main.js--router beforeEach from:', from, '  to:', to, next)
   if (to.name) {
     next()
-
   } else {
     next({name: 'index'})
   }
