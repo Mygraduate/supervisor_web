@@ -25,54 +25,54 @@ const TeacherInfoIndex = resolve => require(['./pages/teacher-info-index/Teacher
 
 const Login = resolve => require(['./pages/login/Login.vue'], resolve);
 
-const routes = [
-  {
-    path: '/supervisor',
-    component: App,
-    children: [
-      {
-        path: 'index',
-        name: 'index',
-        component: Index
-      }, {
-        path: 'progressPage',
-        name: 'progressPage',
-        component: ProgressIndex
-      }, {
-        path: 'autobuildPage',
-        name: 'autobuildPage',
-        component: AutoBuildIndex
-      }, {
-        path: 'permissionPage',
-        name: 'permissionPage',
-        component: PermissionIndex
-      }, {
-        path: 'referCoursePage',
-        name: 'referCoursePage',
-        component: ReferCourseIndex
-      }, {
-        path: 'settingPage',
-        name: 'settingPage',
-        component: SettingIndex
-      }, {
-        path: 'supervisorPage',
-        name: 'supervisorPage',
-        component: SupervisorIndex
-      }, {
-        path: 'teacherInfoPage',
-        name: 'teacherInfoPage',
-        component: TeacherInfoIndex
-      }
-    ]
+const routes = [{
+  path: '/supervisor',
+  component: App,
+  children: [{
+    path: 'index',
+    name: 'index',
+    component: Index
   }, {
-    path: '/login',
-    name: 'login',
-    component: Login
-  }
-]
+    path: 'progressPage',
+    name: 'progressPage',
+    component: ProgressIndex
+  }, {
+    path: 'autobuildPage',
+    name: 'autobuildPage',
+    component: AutoBuildIndex
+  }, {
+    path: 'permissionPage',
+    name: 'permissionPage',
+    component: PermissionIndex
+  }, {
+    path: 'referCoursePage',
+    name: 'referCoursePage',
+    component: ReferCourseIndex
+  }, {
+    path: 'settingPage',
+    name: 'settingPage',
+    component: SettingIndex
+  }, {
+    path: 'supervisorPage',
+    name: 'supervisorPage',
+    component: SupervisorIndex
+  }, {
+    path: 'teacherInfoPage',
+    name: 'teacherInfoPage',
+    component: TeacherInfoIndex
+  }]
+}, {
+  path: 'login',
+  name: 'login',
+  component: Login
+}]
 
 //路由
-const router = new VueRouter({routes: routes, linkActiveClass: 'active', mode: 'history'});
+const router = new VueRouter({
+  routes: routes,
+  linkActiveClass: 'active',
+  mode:'history'
+});
 
 // 全局钩子
 router.beforeEach(function (to, from, next) {
