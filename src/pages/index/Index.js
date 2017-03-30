@@ -2,7 +2,7 @@
  * @Author: Rhymedys
  * @Date:   2017-02-02 16:22:21
  * @Last Modified by: Rhymedys
- * @Last Modified time: 2017-03-30 15:57:32
+ * @Last Modified time: 2017-03-30 16:03:00
  */
 
 'use strict'
@@ -38,13 +38,5 @@ export default {
   beforeDestroy : function () {},
   destroyed : function () {},
   computed : {},
-  methods : {
-    getSubView: function (routerName) {
-      if (routerName) {
-        this
-          .$router
-          .push({name: routerName})
-      }
-    }
-  }
+  methods : {}
 }
