@@ -1,16 +1,15 @@
 <template>
-  <div class="index-box">
-adfasdf
-  </div>
+  <div class="login-box height100 width100">
+    <div class="login-control mg-center">
 
+    </div>
+  </div>
 </template>
 
 <script src="./Login.js">
 
 </script>
 
-<!-- Add "scoped" attribute to limit C
-SS to this component only -->
-<style scope lang="css">
-@import './Login.css'
+<style scope lang="less">
+@import "./Login.less";
 </style>

@@ -28,7 +28,7 @@ const Login = resolve => require(['./pages/login/Login.vue'], resolve)
 
 const routes = [
   {
-    path: '/supervisor',
+    path: '/sas',
     component: App,
     children: [
       {
