@@ -8,10 +8,11 @@
     "dev": "node build/dev-server.js",
     "build": "node build/build.js",
     "test": "npm run unit && npm run e2e",
-        "start": "cd server && node app"
+    "start": "cd server && node app"
   },
-   "dependencies": {
+  "dependencies": {
     "animate.css": "^3.5.2",
+    "element-ui": "^1.2.7",
     "mint-ui": "^2.1.1",
     "vue": "^2.2.0",
     "vue-router": "^2.1.0",
