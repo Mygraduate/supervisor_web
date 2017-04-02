@@ -1,4 +1,3 @@
-
 /*! HTML5 Boilerplate v5.3.0 | MIT License | https://html5boilerplate.com/ */
 
 
@@ -14,88 +13,88 @@
    ========================================================================== */
 
 html {
-  color: #222;
-  font-size: 1em;
-  line-height: 1.4;
-  font-family: "微软雅黑", Helvetica, STHeiTi, sans-serif;
+    color: #222;
+    font-size: 1em;
+    line-height: 1.4;
+    font-family: "微软雅黑", Helvetica, STHeiTi, sans-serif;
 }
 
 p {
-  word-wrap: break-word;
-  word-break: break-all;
+    word-wrap: break-word;
+    word-break: break-all;
 }
 
 a {
-  text-decoration: none !important;
-  cursor: auto;
+    text-decoration: none !important;
+    cursor: auto;
 }
 
 body {
-  line-height: 1.5;
-  font-size: 16px;
-  color: #000;
-  /*    background-color: #eef1f3;*/
-  -webkit-user-select: none;
-  -webkit-text-size-adjust: 100%;
-  -webkit-tap-highlight-color: transparent;
-  outline: 0;
-  margin: 0;
-  padding: 0;
-  background-position-x: center;
-  background-repeat: no-repeat;
-  background-size: 104px auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  position: absolute;
-  overflow: hidden;
-  -webkit-overflow-scrolling: touch;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
+    line-height: 1.5;
+    font-size: 16px;
+    color: #000;
+    /*    background-color: #eef1f3;*/
+    -webkit-user-select: none;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    outline: 0;
+    margin: 0;
+    padding: 0;
+    background-position-x: center;
+    background-repeat: no-repeat;
+    background-size: 104px auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    position: absolute;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
 }
 
 .click-item:active {
-  background-color: #f4f4f4 !important;
-  background: #f4f4f4 !important;
+    background-color: #f4f4f4 !important;
+    background: #f4f4f4 !important;
 }
 
 #app {
-  /*width: auto;*/
-  height: 100vh;
-  background-color: transparent;
-  position: absolute;
-  z-index: 1;
-  left: 0;
-  width: 100%;
-  overflow: hidden;
-  /* Prevent native touch events on Windows */
-  -ms-touch-action: none;
-  /* Prevent the callout on tap-hold and text selection */
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -webkit-text-size-adjust: none;
-  -moz-text-size-adjust: none;
-  -ms-text-size-adjust: none;
-  -o-text-size-adjust: none;
-  text-size-adjust: none;
+    /*width: auto;*/
+    height: 100vh;
+    background-color: transparent;
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    /* Prevent native touch events on Windows */
+    -ms-touch-action: none;
+    /* Prevent the callout on tap-hold and text selection */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-text-size-adjust: none;
+    -moz-text-size-adjust: none;
+    -ms-text-size-adjust: none;
+    -o-text-size-adjust: none;
+    text-size-adjust: none;
 }
 
 #apploading {
-  height: 100%;
-  width: 100%;
-  z-index: -6;
-  position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: -6;
+    position: absolute;
 }
 
 .index-item {
-  overflow: hidden;
+    overflow: hidden;
 }
 
 
@@ -108,13 +107,13 @@ body {
  */
 
 ::-moz-selection {
-  background: #b3d4fc;
-  text-shadow: none;
+    background: #b3d4fc;
+    text-shadow: none;
 }
 
 ::selection {
-  background: #b3d4fc;
-  text-shadow: none;
+    background: #b3d4fc;
+    text-shadow: none;
 }
 
 
@@ -123,12 +122,12 @@ body {
  */
 
 hr {
-  display: block;
-  height: 1px;
-  border: 0;
-  border-top: 1px solid #ccc;
-  margin: 1em 0;
-  padding: 0;
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
 }
 
 
@@ -144,7 +143,7 @@ iframe,
 img,
 svg,
 video {
-  vertical-align: middle;
+    vertical-align: middle;
 }
 
 
@@ -153,9 +152,9 @@ video {
  */
 
 fieldset {
-  border: 0;
-  margin: 0;
-  padding: 0;
+    border: 0;
+    margin: 0;
+    padding: 0;
 }
 
 
@@ -164,7 +163,7 @@ fieldset {
  */
 
 textarea {
-  resize: vertical;
+    resize: vertical;
 }
 
 
@@ -173,10 +172,10 @@ textarea {
    ========================================================================== */
 
 .browserupgrade {
-  margin: 0.2em 0;
-  background: #ccc;
-  color: #000;
-  padding: 0.2em 0;
+    margin: 0.2em 0;
+    background: #ccc;
+    color: #000;
+    padding: 0.2em 0;
 }
 
 
@@ -195,7 +194,7 @@ textarea {
  */
 
 .hidden {
-  display: none !important;
+    display: none !important;
 }
 
 
@@ -205,14 +204,14 @@ textarea {
  */
 
 .visuallyhidden {
-  border: 0;
-  clip: rect(0 0 0 0);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
 }
 
 
@@ -224,12 +223,12 @@ textarea {
 
 .visuallyhidden.focusable:active,
 .visuallyhidden.focusable:focus {
-  clip: auto;
-  height: auto;
-  margin: 0;
-  overflow: visible;
-  position: static;
-  width: auto;
+    clip: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    position: static;
+    width: auto;
 }
 
 
@@ -238,7 +237,7 @@ textarea {
  */
 
 .invisible {
-  visibility: hidden;
+    visibility: hidden;
 }
 
 
@@ -256,14 +255,14 @@ textarea {
 
 .clearfix:before,
 .clearfix:after {
-  content: " ";
-  /* 1 */
-  display: table;
-  /* 2 */
+    content: " ";
+    /* 1 */
+    display: table;
+    /* 2 */
 }
 
 .clearfix:after {
-  clear: both;
+    clear: both;
 }
 
 
@@ -274,18 +273,18 @@ textarea {
    ========================================================================== */
 
 @media only screen and (min-width:480) {
-  /* Style adjustments for viewports that meet the condition */
+    /* Style adjustments for viewports that meet the condition */
 }
 
 @media only screen and (min-width:35em) {
-  /* Style adjustments for viewports that meet the condition */
+    /* Style adjustments for viewports that meet the condition */
 }
 
 @media print,
 (-webkit-min-device-pixel-ratio:1.25),
 (min-resolution:1.25dppx),
 (min-resolution:120dpi) {
-  /* Style adjustments for high resolution devices */
+    /* Style adjustments for high resolution devices */
 }
 
 
@@ -296,66 +295,74 @@ textarea {
  ========================================================================== */
 
 @media print {
-  *,
-  *:before,
-  *:after,
-  *:first-letter,
-  *:first-line {
-    background: transparent !important;
-    color: #000 !important;
-    /* Black prints faster:
+    *,
+    *:before,
+    *:after,
+    *:first-letter,
+    *:first-line {
+        background: transparent !important;
+        color: #000 !important;
+        /* Black prints faster:
                                                               http://www.sanbeiji.com/archives/953 */
-    box-shadow: none !important;
-    text-shadow: none !important;
-  }
-  a,
-  a:visited {
-    text-decoration: underline;
-  }
-  a[href]:after {
-    content: " ("attr(href) ")";
-  }
-  abbr[title]:after {
-    content: " ("attr(title) ")";
-  }
-  /*
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+    a[href]:after {
+        content: " ("attr(href) ")";
+    }
+    abbr[title]:after {
+        content: " ("attr(title) ")";
+    }
+    /*
    * Don't show links that are fragment identifiers,
    * or use the `javascript:` pseudo protocol
    */
-  a[href^="#"]:after,
-  a[href^="javascript:"]:after {
-    content: "";
-  }
-  pre,
-  blockquote {
-    border: 1px solid #999;
-    page-break-inside: avoid;
-  }
-  /*
+    a[href^="#"]:after,
+    a[href^="javascript:"]:after {
+        content: "";
+    }
+    pre,
+    blockquote {
+        border: 1px solid #999;
+        page-break-inside: avoid;
+    }
+    /*
    * Printing Tables:
    * http://css-discuss.incutio.com/wiki/Printing_Tables
    */
-  thead {
-    display: table-header-group;
-  }
-  tr,
-  img {
-    page-break-inside: avoid;
-  }
-  img {
-    max-width: 100% !important;
-  }
-  p,
-  h2,
-  h3 {
-    orphans: 3;
-    widows: 3;
-    word-break: break-all;
-  }
-  h2,
-  h3 {
-    page-break-after: avoid;
-  }
+    thead {
+        display: table-header-group;
+    }
+    tr,
+    img {
+        page-break-inside: avoid;
+    }
+    img {
+        max-width: 100% !important;
+    }
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+        word-break: break-all;
+    }
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+}
+
+.title,
+h2,
+h3,
+h4 {
+    color: #414c59;
+    font-family: Helvetica Neue, Microsoft Yahei, Hiragino Sans GB, Microsoft Sans Serif, WenQuanYi Micro Hei, sans-serif;
 }
 
 
@@ -363,42 +370,42 @@ textarea {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity .1s ease;
+    transition: opacity .1s ease;
 }
 
 .fade-enter,
 .fade-leave-active {
-  opacity: 0
+    opacity: 0
 }
 
 .child-view {
-  transition: all .1s cubic-bezier(.55, 0, .1, 1);
+    transition: all .1s cubic-bezier(.55, 0, .1, 1);
 }
 
 .slide-left-enter,
 .slide-right-leave-active {
-  opacity: 0;
-  -webkit-transform: translate(30px, 0);
-  transform: translate(30px, 0);
+    opacity: 0;
+    -webkit-transform: translate(30px, 0);
+    transform: translate(30px, 0);
 }
 
 .slide-left-leave-active,
 .slide-right-enter {
-  opacity: 0;
-  -webkit-transform: translate(-30px, 0);
-  transform: translate(-30px, 0);
+    opacity: 0;
+    -webkit-transform: translate(-30px, 0);
+    transform: translate(-30px, 0);
 }
 
 .fold {
-  transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
 }
 
 .fold-enter-active,
 .fold-leave-active {
-  transition: all 0.5s;
+    transition: all 0.5s;
 }
 
 .fold-enter,
 .fold-leave-active {
-  transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
 }

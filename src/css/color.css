@@ -1,64 +1,82 @@
-.cl3C3C3C ,.cl606060 {
-	color: #3C3C3C;
+.cl3C3C3C,
+.cl606060 {
+    color: #3C3C3C;
 }
+
 .cl000000 {
-	color: #000000;
+    color: #000000;
 }
-.cl9F9F9F, .cl159159159 {
-	color: #9F9F9F;
+
+.cl9F9F9F,
+.cl159159159 {
+    color: #9F9F9F;
 }
+
 .clDFE0E3 {
-	color: #DFE0E3;
+    color: #DFE0E3;
 }
-.cl6E6E6E ,.cl110110110 {
-	color: #6E6E6E;
+
+.cl6E6E6E,
+.cl110110110 {
+    color: #6E6E6E;
 }
+
 .clFFFFFF {
-	color: #FFFFFF;
+    color: #FFFFFF;
 }
+
 .clFD8A17 {
-	color: #FD8A17;
+    color: #FD8A17;
 }
 
 .clBDBDBD {
-	color: #BDBDBD;
+    color: #BDBDBD;
 }
 
-.clFF7777 ,.cl255119119{
-	color: #FF7777;
+.clFF7777,
+.cl255119119 {
+    color: #FF7777;
 }
 
-
-.clC1C4C9, .cl193196201{
-	color: #C1C4C9;
+.clC1C4C9,
+.cl193196201 {
+    color: #C1C4C9;
 }
 
-
-.cl28B4FF{
-	color: #28B4FF;
+.cl28B4FF {
+    color: #28B4FF;
 }
 
-.cl95DAFF{
-	color: #95DAFF;
+.cl95DAFF {
+    color: #95DAFF;
 }
 
-.clDBDFE3{
-	color: #DBDFE3;
-}
-.clE6E6FA{
-	color: #E6E6FA;
+.clDBDFE3 {
+    color: #DBDFE3;
 }
 
-
-.cl333{
-	color: #333;
+.clE6E6FA {
+    color: #E6E6FA;
 }
 
-
-.clE5E5E5, cl229229229{
-	color: #E5E5E5;
+.cl333 {
+    color: #333;
 }
 
-.clF3F3F3 ,.cl243243243{
-	color: #F3F3F3;
+.clE5E5E5,
+.cl229229229 {
+    color: #E5E5E5;
+}
+
+.clF3F3F3,
+.cl243243243 {
+    color: #F3F3F3;
+}
+
+.cl20a0ff {
+    color: #20a0ff;
+}
+
+.cl999 {
+    color: #999;
 }

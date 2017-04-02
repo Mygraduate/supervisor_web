@@ -15,6 +15,7 @@ import './css/main'
 import './css/margin'
 import './css/padding'
 import 'element-ui/lib/theme-default/index'
+import 'mint-ui/lib/style'
 
 // App为html的首页入口 全局Vue对象配置
 commonUtils.log(router)
