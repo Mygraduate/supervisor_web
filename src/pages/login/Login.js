@@ -2,12 +2,11 @@
  * @Author: Rhymedys
  * @Date:   2017-02-02 16:22:21
  * @Last Modified by: Rhymedys
- * @Last Modified time: 2017-04-05 16:04:32
+ * @Last Modified time: 2017-04-05 20:23:20
  */
 
 'use strict'
 import commonUtils from '../../utils/CommonUtils'
-import timeUtils from '../../utils/TimeUtils'
 import Vue from 'vue'
 
 // vuex
@@ -45,6 +44,11 @@ export default {
   },
   methods : {
     ...mapActions({login, inputAccount, inputPWD}),
-    goLogin: function () {}
+    goLogin: function () {
+      let that = this
+      if (that.getInputAccount.trim().length > 0 && this.getInputPWD.trim().length > 0) {} else {
+        commonUtils.showMsg({context: that, msg: '请输入完整账号和密码'})
+      }
+    }
   }
 }
