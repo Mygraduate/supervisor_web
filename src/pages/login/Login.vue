@@ -25,7 +25,7 @@
             <img src="../../assets/password.png"
                  height="20"
                  width="20"></mt-field>
-          <el-button type="primary"
+          <el-button @click="goLogin"  type="primary"
                      class="mg-top20">登录</el-button>
         </div>
       </div>

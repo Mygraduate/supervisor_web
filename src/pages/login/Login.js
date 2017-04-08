@@ -2,7 +2,7 @@
  * @Author: Rhymedys
  * @Date:   2017-02-02 16:22:21
  * @Last Modified by: Rhymedys
- * @Last Modified time: 2017-04-05 20:23:20
+ * @Last Modified time: 2017-04-08 21:01:19
  */
 
 'use strict'
@@ -10,9 +10,9 @@ import commonUtils from '../../utils/CommonUtils'
 import Vue from 'vue'
 
 // vuex
-import {mapGetters, mapActions} from 'vuex'
+import {mapGetters, mapActions, mapMutations} from 'vuex'
 
-import {login, inputAccount, inputPWD} from '../../vuex/modules/login/Actions'
+import {INPUT_LOGIN_ACCOUNT, INPUT_LOGIN_PWD, RESET_LOGIN_FORM} from '../../vuex/modules/login/Mutations'
 import {GET_INPUT_ACCOUNT, GET_INPUT_PWD} from '../../vuex/modules/login/Getters'
 
 import Field from '../../components/cc-field/CCField'
@@ -30,7 +30,7 @@ export default {
         return this.getInputAccount
       },
       set(e) {
-        inputAccount(this.$store, {value: e})
+        this.inputAccount({value: e})
       }
     },
     inputPWDModel: {
@@ -38,12 +38,12 @@ export default {
         return this.getInputPWD
       },
       set(e) {
-        inputPWD(this.$store, {value: e})
+        this.inputPWD({value: e})
       }
     }
   },
   methods : {
-    ...mapActions({login, inputAccount, inputPWD}),
+    ...mapMutations({inputAccount: INPUT_LOGIN_ACCOUNT, inputPWD: INPUT_LOGIN_PWD, resetLoginForm: RESET_LOGIN_FORM}),
     goLogin: function () {
       let that = this
       if (that.getInputAccount.trim().length > 0 && this.getInputPWD.trim().length > 0) {} else {
