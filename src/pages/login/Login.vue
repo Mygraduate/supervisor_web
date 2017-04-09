@@ -25,8 +25,13 @@
             <img src="../../assets/password.png"
                  height="20"
                  width="20"></mt-field>
-          <el-button @click="goLogin"  type="primary"
+          <el-button @click="goLogin"
+                     type="primary"
                      class="mg-top20">登录</el-button>
+
+          <el-button @click="getAccountList"
+                     type="primary"
+                     class="mg-top20">getAccountList</el-button>
         </div>
       </div>
 

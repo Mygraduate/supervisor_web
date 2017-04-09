@@ -2,12 +2,14 @@
  * @Author: Rhymedys
  * @Date:   2017-02-02 16:22:21
  * @Last Modified by: Rhymedys
- * @Last Modified time: 2017-04-08 21:01:19
+ * @Last Modified time: 2017-04-09 23:02:43
  */
 
 'use strict'
 import commonUtils from '../../utils/CommonUtils'
 import Vue from 'vue'
+import * as api from '../../utils/Api'
+import {LOCAL_STORAGE_TOKEN} from '../../utils/LocalStorage'
 
 // vuex
 import {mapGetters, mapActions, mapMutations} from 'vuex'
@@ -46,9 +48,24 @@ export default {
     ...mapMutations({inputAccount: INPUT_LOGIN_ACCOUNT, inputPWD: INPUT_LOGIN_PWD, resetLoginForm: RESET_LOGIN_FORM}),
     goLogin: function () {
       let that = this
-      if (that.getInputAccount.trim().length > 0 && this.getInputPWD.trim().length > 0) {} else {
+      if (that.getInputAccount.trim().length > 0 && this.getInputPWD.trim().length > 0) {
+        api.login({
+          body: {
+            username: that.getInputAccount,
+            password: that.getInputPWD
+          },
+          success: function (res) {
+            if (res.data && res.data.data && res.data.data.token) {
+              localStorage.setItem(LOCAL_STORAGE_TOKEN, res.data.data.token)
+            }
+          }
+        })
+      } else {
         commonUtils.showMsg({context: that, msg: '请输入完整账号和密码'})
       }
+    },
+    getAccountList: function () {
+      api.getAccountList()
     }
   }
 }
