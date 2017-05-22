@@ -2,7 +2,7 @@
  * @Author: Rhymedys
  * @Date:   2017-01-31 21:10:20
  * @Last Modified by: Rhymedys
- * @Last Modified time: 2017-04-05 20:19:38
+ * @Last Modified time: 2017-05-20 23:39:58
  */
 
 'use strict'
@@ -91,24 +91,28 @@ module.exports = {
         : 'Hello', obj.title
         ? obj.title
         : '提示', {
-          type: obj.type
+        type: obj.type
           ? obj.type
           : 'warning',
-          showCancelButton: obj.showCancelButton
+        showCancelButton: obj.showCancelButton
           ? obj.showCancelButton
           : false,
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          beforeClose: (action, instance, done) => {
-            obj.beforeClose
-            ? obj.beforeClose(action, instance, done)
-            : null
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        beforeClose: (action, instance, done) => {
+          if (action === 'cancel') {
+            done()
           }
-        }).then((action) => {
-          obj.complete
+
+          obj.beforeClose
+            ? obj.beforeClose(action, instance, done)
+            : done()
+        }
+      }).then((action) => {
+        obj.complete
           ? obj.complete(action)
           : null
-        }))
+      }))
       : null
   },
 
@@ -141,20 +145,6 @@ module.exports = {
     location.href = newUrl
   },
 
-  get50SrcUrl: function (strUrl) {
-    var tempurl = strUrl.substr(0, strUrl.lastIndexOf('.'))
-    var format = strUrl.substr(strUrl.lastIndexOf('.'))
-
-    return tempurl + '_s50' + format
-  },
-
-  get100SrcUrl: function (strUrl) {
-    var tempurl = strUrl.substr(0, strUrl.lastIndexOf('.'))
-
-    var format = strUrl.substr(strUrl.lastIndexOf('.'))
-
-    return tempurl + '_s100' + format
-  },
 
   getUserAgent: function () {
     var u = navigator.userAgent
@@ -180,18 +170,18 @@ module.exports = {
     return !!url.match(reg)
   },
 
-  getQueryString: function (name) {
-    var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
-    var r = window
-      .location
-      .search
-      .substr(1)
-      .match(reg)
-    if (r != null) {
-      return unescape(r[2])
-    }
-    return null
-  },
+  // getQueryString: function (name) {
+  //   var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
+  //   var r = window
+  //     .location
+  //     .search
+  //     .substr(1)
+  //     .match(reg)
+  //   if (r != null) {
+  //     return unescape(r[2])
+  //   }
+  //   return null
+  // },
 
   containChinese: function (strUrl) {
     return !!strUrl.match(/[\u2E80-\u2EFF\u2F00-\u2FDF\u3000-\u303F\u31C0-\u31EF\u3200-\u32FF\u3300-\u33FF\u3400-\u4DBF\u4DC0-\u4DFF\u4E00-\u9FBF\uF900-\uFAFF\uFE30-\uFE4F\uFF00-\uFFEF]+/g)
@@ -242,6 +232,19 @@ module.exports = {
     }
   },
 
+
+   getAllParamsStr() {
+      try {
+        var strUrl = window.location.href;
+        var num = strUrl.indexOf("?");
+        return strUrl.substr(num + 1);
+      } catch (e) {
+
+      } finally {
+
+      }
+    },
+
   clearPayLocalStorage: function () {
     try {
       localStorage.removeItem('payModuleOrderId')
@@ -270,6 +273,38 @@ module.exports = {
     // hexColors rgbColors
     return '/^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/'.test(value) || '/^[rR][gG][Bb][Aa]?[\(]([\s]*(2[0-4][0-9]|25[0-5]|[01]?[0-9][0-9]?),){2}[\s]*(2[' +
       '0-4][0-9]|25[0-5]|[01]?[0-9][0-9]?),?[\s]*(0\.\d{1,2}|1|0)?[\)]{1}$/g'.test(value)
+  },
+  openSelectFilesDialog(context, event) {
+    try {
+      if (event.target !== context.$refs.fileinput) {
+        event.preventDefault()
+        // event.stopPropagation()
+      }
+      // alert('点击')
+      context
+        .$refs
+        .fileinput
+        .click()
+    } catch (e) {
+      alert('打开导入窗口错误')
+    }
+  },
+
+  // check files
+  checkFiles(files) {
+    var fileNum = files.length
+    // 是否文件为空
+    if (fileNum == 0) {
+      return false
+    }
+
+    for (let i = 0; i < fileNum; i++) {
+      if ((files[i].type.indexOf('application/vnd.ms-excel') === -1) && (files[i].type.indexOf('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') === -1)) {
+        return false
+      }
+    }
+
+    return true
   }
 
 }

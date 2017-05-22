@@ -2,74 +2,165 @@
  * @Author: Rhymedys
  * @Date:   2017-02-02 16:22:21
  * @Last Modified by: Rhymedys
- * @Last Modified time: 2017-03-30 15:01:12
+ * @Last Modified time: 2017-05-21 20:04:09
  */
 
-'use strict';
-require('./SettingIndex.css');
-import commonUtils from '../../../utils/CommonUtils';
-import timeUtils from '../../../utils/TimeUtils';
+'use strict'
+require('./SettingIndex.css')
+import commonUtils from '../../../utils/CommonUtils'
+import timeUtils from '../../../utils/TimeUtils'
 
-
-
-//vuex
-import {
-  mapState,
-  mapGetters,
-  mapActions,
-  mapMutations
-} from 'vuex';
-import * as mActions from '../../../vuex/Actions';
-import * as mGetters from '../../../vuex/Getters';
-import * as mMutations from '../../../vuex/Mutations';
-
+// vuex
+import {mapState, mapGetters, mapActions, mapMutations} from 'vuex'
 
 export default {
   name: 'cc-SettingIndex',
-  data() {
-    return {}
+  data () {
+    return {
+      dialogTitle: '添加学院',
+      dialogForm: {
+        id: '',
+        des: '',
+        name: ''
+      },
+      dialogFormVisible: false,
+      formLabelWidth: '120px',
+      dialogType: 'ADD',
+      btnOKDisable: true,
+      multipleSelection: [],
+      btnDeleteDisable: true,
+      dialogTitle: ''
+    }
   },
-  beforeCreate: function() {
-    commonUtils.log("--SettingIndex.Vue--Lifecycle:beforeCreate");
+  beforeCreate: function () {
+    commonUtils.log('--SettingIndex.Vue--Lifecycle:beforeCreate')
   },
-  created: function() {
-    commonUtils.log("--SettingIndex.Vue--Lifecycle:created");
+  created: function () {
+    commonUtils.log('--SettingIndex.Vue--Lifecycle:created')
+    let that = this
+    that.requestCollegeList({
+      page: that.$route.query.page
+        ? that.$route.query.page
+        : 1
+    })
   },
-  beforeMount: function() {
-    commonUtils.log("--SettingIndex.Vue--Lifecycle:beforeMount");
+  beforeMount: function () {
+    commonUtils.log('--SettingIndex.Vue--Lifecycle:beforeMount')
   },
-  mounted: function() {
-    commonUtils.log("--SettingIndex.Vue--Lifecycle:mounted");
+  mounted: function () {
+    commonUtils.log('--SettingIndex.Vue--Lifecycle:mounted')
   },
-  updated: function() {
-    commonUtils.log("--SettingIndex.Vue--Lifecycle:updated");
-
+  updated: function () {
+    commonUtils.log('--SettingIndex.Vue--Lifecycle:updated')
+    let that = this
+    that.btnOKDisable = !(that.dialogForm.name.trim().length > 0)
   },
-  activated: function() {
-    commonUtils.log("--SettingIndex.Vue--Lifecycle:activated");
+  activated: function () {
+    commonUtils.log('--SettingIndex.Vue--Lifecycle:activated')
   },
-  deactivated: function() {
-    commonUtils.log("--SettingIndex.Vue--Lifecycle:deactivated");
+  deactivated: function () {
+    commonUtils.log('--SettingIndex.Vue--Lifecycle:deactivated')
   },
-  beforeDestroy: function() {
-    commonUtils.log("--SettingIndex.Vue--Lifecycle:beforeDestroy");
+  beforeDestroy: function () {
+    commonUtils.log('--SettingIndex.Vue--Lifecycle:beforeDestroy')
   },
-  destroyed: function() {
-    commonUtils.log("--SettingIndex.Vue--Lifecycle:destroyed");
-  },
-  components: {
-
+  destroyed: function () {
+    commonUtils.log('--SettingIndex.Vue--Lifecycle:destroyed')
   },
   computed: {
-
+    ...mapGetters(['getCollegeList', 'getCollegeListTotalElements'])
+  },
+  watch: {
+    multipleSelection: function (value) {
+      this.btnDeleteDisable = !(value.length > 0)
+    }
   },
   methods: {
+    ...mapActions(['requestCollegeList', 'requestCollegeUpdate', 'requestCollegeDelete', 'requestCollegeCreate']),
+    handleCurrentChange (page) {
+      let that = this
+      that
+        .$router
+        .replace({
+          name: that.$route.name,
+          query: {
+            ...that.$route.query,
+            page
+          }
+        })
+      that.requestCollegeList({page})
+    },
+    showDialog (form) {
+      console.log(form)
+      let that = this
+      if (form) {
+        that.dialogForm = Object.assign({}, form)
+        that.dialogType = 'UPDATE'
+        that.dialogTitle = '修改学院信息'
+      } else {
+        that.dialogType = 'ADD'
+        that.dialogTitle = '增加学院'
+      }
+      that.dialogFormVisible = true
+    },
+    handleDialogCancel () {
+      let that = this
+      that.dialogFormVisible = false
+      that.resetDialogForm()
+    },
+    handleDialogOk () {
+      let that = this
+      that.dialogFormVisible = false
+      let tempObj = {
+        body: that.dialogForm,
+        success: (res) => {},
+        error: (res) => {},
+        complete: (res) => {
+          that.resetDialogForm()
+        }
+      }
 
-  },
-  //校验数据类型
-  props: {
-    // mData: {
-    //   type: Array
-    // },
+      if (that.dialogType === 'UPDATE') {
+        that.requestCollegeUpdate(tempObj)
+      } else {
+        that.requestCollegeCreate(tempObj)
+      }
+    },
+    resetDialogForm () {
+      let that = this
+      that.dialogForm = {
+        id: '',
+        des: '',
+        name: ''
+      }
+    },
+    handleSelectionChange (val) {
+      this.multipleSelection = val
+    },
+    handleDelete (index, rowObj) {
+      let that = this
+      commonUtils.showMsgBox({
+        context: that,
+        msg: '是否确定删除？',
+        beforeClose: (action, instance, done) => {
+          if (action === 'confirm') {
+            let body = []
+            if (rowObj) {
+              body.push(rowObj)
+            }
+            if (that.multipleSelection.length > 0) {
+              body = body.concat(that.multipleSelection)
+            }
+            that.requestCollegeDelete({
+              body,
+              success: (res) => {},
+              error: (res) => {},
+              complete: (res) => {}
+            })
+            done()
+          }
+        }
+      })
+    }
   }
 }

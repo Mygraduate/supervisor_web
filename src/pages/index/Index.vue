@@ -7,8 +7,8 @@
         <div class="container">
           <h1>督导听课系统</h1>
           <div class="welcome">
-            <div class="welcome-msg"> <img src="../../assets/iconMeWhite.png"
-                   class="welcome-icon">欢迎你，管理员</div>
+            <div class="welcome-msg">
+              <img src="../../assets/iconMeWhite.png" class="welcome-icon">欢迎你，管理员</div>
           </div>
         </div>
       </div>
@@ -20,41 +20,40 @@
         <div class="cc-row">
           <!--左侧栏-->
           <el-row class="tac left-row">
-            <el-col v-bind:span="8"
-                    class="col">
-              <el-menu default-active="1"
-                       class="el-menu-vertical-demo fs20">
+            <el-col v-bind:span="8" class="col">
+              <el-menu :default-active="selectedMenu" class="el-menu-vertical-demo fs20">
                 <router-link :to="{name:'indexHome'}">
-                  <el-menu-item index="1"><img class="el-menu-icon index-icon"
-                         src="../../assets/iconIndexBlack.png">主页</el-menu-item>
+                  <el-menu-item index="indexHome">
+                    <img class="el-menu-icon index-icon" src="../../assets/iconIndexBlack.png">主页</el-menu-item>
                 </router-link>
                 <router-link :to="{name:'progressPage'}">
-                  <el-menu-item index="2"><img class="el-menu-icon index-icon"
-                         src="../../assets/iconProgressBlack.png">进度表</el-menu-item>
+                  <el-menu-item index="progressPage">
+                    <img class="el-menu-icon index-icon" src="../../assets/iconProgressBlack.png">进度表</el-menu-item>
                 </router-link>
                 <router-link :to="{name:'referCoursePage'}">
-                  <el-menu-item index="3"><img class="el-menu-icon index-icon"
-                         src="../../assets/iconReferBlack.png">排课参考</el-menu-item>
+                  <el-menu-item index="referCoursePage">
+                    <img class="el-menu-icon index-icon" src="../../assets/iconReferBlack.png">排课参考</el-menu-item>
                 </router-link>
                 <router-link :to="{name:'autobuildPage'}">
-                  <el-menu-item index="4"><img class="el-menu-icon index-icon"
-                         src="../../assets/iconBuildBlack.png">自动生成</el-menu-item>
+                  <el-menu-item index="autobuildPage">
+                    <img class="el-menu-icon index-icon" src="../../assets/iconBuildBlack.png">自动生成</el-menu-item>
                 </router-link>
                 <router-link :to="{name:'teacherInfoPage'}">
-                  <el-menu-item index="5"><img class="el-menu-icon index-icon"
-                         src="../../assets/iconTeachInfoBlack.png">教师信息</el-menu-item>
+                  <el-menu-item index="teacherInfoPage">
+                    <img class="el-menu-icon index-icon" src="../../assets/iconTeachInfoBlack.png">教师信息</el-menu-item>
+                </router-link>
+
+                <router-link :to="{name:'userPage'}">
+                  <el-menu-item index="userPage">
+                    <img class="el-menu-icon index-icon" src="../../assets/iconSupervisorBlack.png">用户信息</el-menu-item>
                 </router-link>
                 <router-link :to="{name:'supervisorPage'}">
-                  <el-menu-item index="6"><img class="el-menu-icon index-icon"
-                         src="../../assets/iconSupervisorBlack.png">督导信息</el-menu-item>
-                </router-link>
-                <router-link :to="{name:'permissionPage'}">
-                  <el-menu-item index="7"><img class="el-menu-icon index-icon"
-                         src="../../assets/iconPermissionBlack.png">权限管理</el-menu-item>
+                  <el-menu-item index="supervisorPage">
+                    <img class="el-menu-icon index-icon" src="../../assets/iconSupervisorBlack.png">督导信息</el-menu-item>
                 </router-link>
                 <router-link :to="{name:'settingPage'}">
-                  <el-menu-item index="8"><img class="el-menu-icon index-icon"
-                         src="../../assets/iconSettingBlack.png">设置</el-menu-item>
+                  <el-menu-item index="settingPage">
+                    <img class="el-menu-icon index-icon" src="../../assets/iconSettingBlack.png">设置</el-menu-item>
                 </router-link>
               </el-menu>
             </el-col>
@@ -62,11 +61,9 @@
         </div>
 
         <div class="cc-row-right">
-          <transition v-bind:name="transitionName"
-                      mode="out-in">
-            <keep-alive>
-              <router-view class="view"></router-view>
-            </keep-alive>
+          <transition v-bind:name="transitionName" mode="out-in">
+
+            <router-view class="view"></router-view>
           </transition>
         </div>
 
