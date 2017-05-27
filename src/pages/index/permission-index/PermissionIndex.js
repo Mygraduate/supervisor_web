@@ -2,7 +2,7 @@
  * @Author: Rhymedys
  * @Date:   2017-02-02 16:22:21
  * @Last Modified by: Rhymedys
- * @Last Modified time: 2017-03-30 15:00:38
+ * @Last Modified time: 2017-05-13 08:44:20
  */
 
 'use strict';
@@ -27,7 +27,14 @@ import * as mMutations from '../../../vuex/Mutations';
 export default {
   name: 'cc-PermissionIndex',
   data() {
-    return {}
+    return {
+      dialogTableVisible: false,
+        dialogFormVisible: false,
+        form:{
+          name:'',
+          region:''
+        }
+    }
   },
   beforeCreate: function() {
     commonUtils.log("--PermissionIndex.Vue--Lifecycle:beforeCreate");
@@ -64,12 +71,8 @@ export default {
 
   },
   methods: {
-
+      btnAdd(){
+        this.dialogFormVisible=true;
+      }
   },
-  //校验数据类型
-  props: {
-    // mData: {
-    //   type: Array
-    // },
-  }
 }

@@ -7,7 +7,7 @@ import router from './router'
 import commonUtils from './utils/CommonUtils'
 import store from './vuex/Store'
 import ElementUI from 'element-ui'
-
+import {setContext} from './utils/Api'
 import './css/color'
 import './css/common.less'
 import './css/font'
@@ -20,6 +20,7 @@ import 'mint-ui/lib/style'
 // App为html的首页入口 全局Vue对象配置
 commonUtils.log(router)
 Vue.config.debug = true
+Vue.config.devtools = true
 Vue.config.errorHandler = function (err, vm) {
   // handle error
   commonUtils.log('--main.js--ERROR:', err)
@@ -33,7 +34,11 @@ const app = new Vue({
   store,
   router,
   beforeCreate: function () {},
-  created: function () {},
+  created: function () {
+    let that = this
+    setContext(that)
+    commonUtils.initTimeFormat()
+  },
   beforeMount: function () {},
   mounted: function () {},
   updated: function () {},
