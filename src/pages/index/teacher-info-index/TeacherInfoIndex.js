@@ -32,7 +32,8 @@ export default {
       multipleSelection: [],
       btnDeleteDisable: true,
       searchTeacherName: '',
-      searchTeacherTitle: ''
+      searchTeacherTitle: '',
+      updatingTeacher:false
     }
   },
   beforeCreate : function () {
@@ -119,14 +120,18 @@ export default {
     },
     handleDialogOk() {
       let that = this
-      that.dialogFormVisible = false
+
+      that.updatingTeacher=true
       let tempObj = {
         body: Object.assign({}, that.dialogForm, {
           cid: localStorage.getItem('loginCollegeId')
         }),
-        success: (res) => {},
+        success: (res) => {
+          that.dialogFormVisible = false          
+        },
         error: (res) => {},
         complete: (res) => {
+          that.updatingTeacher=false
           that.resetDialogForm()
           that.searchTeacherName = ''
           that.searchTeacherTitle = ''

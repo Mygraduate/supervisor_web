@@ -1,8 +1,8 @@
 /*
  * @Author: Rhymedys
  * @Date:   2017-01-31 14:10:32
- * @Last Modified by: Rhymedys
- * @Last Modified time: 2017-05-26 20:56:41
+ * @Last Modified by:   Rhymedys
+ * @Last Modified time: 2017-06-02 15:53:43
 
  */
 
@@ -117,6 +117,7 @@ const actions = {
       success: (res) => {
         if (res.data.code === 1) {
           commit({type: 'setCourseList', content: res.data.data.content, totalElements: res.data.data.totalElements})
+          obj.success?obj.success(res):null
         }
       }
     })

@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title="'更改状态'" v-model="showChangeStatusDialog" :modal="false" :show-close="false" :close-on-click-modal="false"  size="tiny">
+  <el-dialog :title="'更改状态'" v-model="showChangeStatusDialog"  :show-close="false" :close-on-click-modal="false"  size="tiny">
     <el-form ref="form" :model="changeStatusDialogData">
       <el-form-item :label-width="formLabelWidth">
         {{changeStatusDialogData.course&&changeStatusDialogData.course.name?changeStatusDialogData.course.name:''}}

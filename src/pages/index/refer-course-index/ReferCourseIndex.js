@@ -2,7 +2,7 @@
  * @Author: Rhymedys
  * @Date:   2017-02-02 16:22:21
  * @Last Modified by: Rhymedys
- * @Last Modified time: 2017-05-26 14:08:07
+ * @Last Modified time: 2017-05-31 17:11:09
  */
 
 'use strict'
@@ -17,64 +17,65 @@ import * as mActions from '../../../vuex/Actions'
 import * as mGetters from '../../../vuex/Getters'
 import * as mMutations from '../../../vuex/Mutations'
 
-import CourseArrageTableComponment from '../../../components/CourseArrageTable'
+import CourseArrageTableComponment from './componments/CourseArrageTable'
 import CreateByHandDialogComponment from './componments/CreateByHandDialog'
 
 Vue.component(CourseArrageTableComponment.name, CourseArrageTableComponment)
 Vue.component(CreateByHandDialogComponment.name, CreateByHandDialogComponment)
 
 export default {
-  name: 'cc-ReferCourseIndex',
+  name : 'cc-ReferCourseIndex',
   data() {
-    return {defaultStatus: 1, currentPage: 1, tableResetAll: false, createByHandDialogData: {}, showCreateByHandDialog: false}
+    return {defaultStatus: 1, currentPage: 1, tableResetAll: false, 
+      updatingCreateArrageByHand:false,createByHandDialogData: {}, showCreateByHandDialog: false}
   },
-  beforeCreate: function () {
+  beforeCreate : function () {
     commonUtils.log('--ReferCourseIndex.Vue--Lifecycle:beforeCreate')
   },
-  created: function () {
+  created : function () {
     commonUtils.log('--ReferCourseIndex.Vue--Lifecycle:created')
     let that = this
-    that.requestArrageList({status: that.defaultStatus})
+    that.requestReferList({})
     setTimeout(() => {
       that.requestUserListAll({
-        roleId: 2,
+        roleId: 3,
         cid: localStorage.getItem('loginCollegeId')
       })
     }, 1000)
 
   },
-  beforeMount: function () {
+  beforeMount : function () {
     commonUtils.log('--ReferCourseIndex.Vue--Lifecycle:beforeMount')
   },
-  mounted: function () {
+  mounted : function () {
     commonUtils.log('--ReferCourseIndex.Vue--Lifecycle:mounted')
 
   },
-  updated: function () {
+  updated : function () {
     commonUtils.log('--ReferCourseIndex.Vue--Lifecycle:updated')
   },
-  activated: function () {
+  activated : function () {
     commonUtils.log('--ReferCourseIndex.Vue--Lifecycle:activated')
   },
-  deactivated: function () {
+  deactivated : function () {
     commonUtils.log('--ReferCourseIndex.Vue--Lifecycle:deactivated')
   },
-  beforeDestroy: function () {
+  beforeDestroy : function () {
     commonUtils.log('--ReferCourseIndex.Vue--Lifecycle:beforeDestroy')
     this.resetConfirmTableListState()
     this.resetUserState()
     this.resetReferState()
   },
-  destroyed: function () {
+  destroyed : function () {
     commonUtils.log('--ReferCourseIndex.Vue--Lifecycle:destroyed')
   },
-  computed: {
-    ...mapGetters(['getConfirmTableList', 'getConfirmTableListTotalElements', 'getUserListAll', 'getOptimalUserList'])
+  computed : {
+    ...mapGetters(['getReferList', 'getReferListTotal', 'getUserListAll', 'getOptimalUserList'])
   },
-  methods: {
+  methods : {
     ...mapMutations(['resetConfirmTableListState', 'resetUserState', 'resetReferState']),
     ...mapActions([
-      'requestArrageList',
+      'requestReferList',
       'apiRequestArrageDelete',
       'apiArrageAutoCreate',
       'requestUserListAll',
@@ -90,7 +91,7 @@ export default {
       let that = this
       that.currentPage = page
 
-      that.requestArrageList({
+      that.requestReferList({
         page,
         status: selectedStatus || that.defaultStatus,
         teacher: searchTeacherInput,
@@ -105,7 +106,7 @@ export default {
     tableResetClick: function () {
       let that = this
       that.resetTableData()
-      that.requestArrageList({status: that.defaultStatus})
+      that.requestReferList({status: that.defaultStatus})
     },
 
     /**
@@ -115,7 +116,7 @@ export default {
     resetTableData: function () {
       let that = this
       that.tableResetAll = !that.tableResetAll
-      that.comfirmTableCurrentPage = 1
+      that.currentPage = 1
     },
     /**
      * 搜索按钮
@@ -123,7 +124,8 @@ export default {
      */
     tableSearchClick: function ({searchTeacherInput, selectedDay, selectedStatus, selectedWeek}) {
       let that = this
-      that.requestArrageList({
+      that.currentPage = 1
+      that.requestReferList({
         status: selectedStatus || that.defaultStatus,
         week: selectedWeek,
         day: selectedDay,
@@ -188,17 +190,17 @@ export default {
     openArrargeByHandDialog: function (index, item) {
       let that = this
       that.requestSparaTimeOptimal({
-        collegeId: item.collegeId
-          ? item.collegeId
+        collegeId: item.cid
+          ? item.cid
           : null,
-        week: item.course && item.course.week
-          ? item.course.week
+        week: item.week
+          ? item.week
           : null,
-        day: item.course && item.course.day
-          ? item.course.day
+        day: item.day
+          ? item.day
           : null,
-        scope: item.course && item.course.scope
-          ? item.course.scope
+        scope: item.scope
+          ? item.scope
           : null
       })
       that.createByHandDialogData = item
@@ -217,19 +219,27 @@ export default {
     commitCreateArrageByHand: function (groupsValue, dialogData) {
       let that = this
       let tempGrops = ''
+      that.updatingCreateArrageByHand=true
       for (const value of groupsValue) {
         tempGrops = `${tempGrops},${value}`
       }
 
       that.requestArrargeCreate({
-        body: {
-          arrage: Object.assign({}, dialogData, {
-            groups: tempGrops.substring(1)
-          })
-        },
+        body: Object.assign({},{
+                  "collegeId": dialogData.cid,
+          "courseId":dialogData. id,
+          "status": 1,
+          "tid":dialogData. tid
+        },{
+          groups: tempGrops.substring(1)
+        }),
         success(res) {
           that.closeArrargeByHandDialog()
-          that.requestArrageList({status: that.defaultStatus})
+          that.requestReferList({status: that.defaultStatus})
+        },
+        complete(res){
+      that.updatingCreateArrageByHand=false
+          
         }
       })
     }

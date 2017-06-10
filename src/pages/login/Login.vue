@@ -1,7 +1,7 @@
 <template>
   <div class="login-box height100 width100 ">
     <header class="login-header cl20a0ff fs25 pd15">
-      听课管理系统
+      教学督导平台
     </header>
     <div class="login-middle mg-center display-row ai-c ">
       <img class="login-center-left"
@@ -32,10 +32,6 @@
       </div>
 
     </div>
-    <footer class="login-bottom ta-c cl999">
-      毕业项目设计 分工--------- Web前端：洛.曦. WebChat前端：J I E 后端：小孔成像 测试、文档：Eyes乀
-
-    </footer>
   </div>
 </template>
 

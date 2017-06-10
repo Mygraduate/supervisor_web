@@ -1,8 +1,8 @@
 /*
 * @Author: Rhymedys
 * @Date:   2017-02-06 10:28:47
-* @Last Modified by:   Rhymedys
-* @Last Modified time: 2017-02-07 16:52:46
+ * @Last Modified by: Rhymedys
+ * @Last Modified time: 2017-06-04 20:24:42
 */
 .tempform {
 	position: absolute !important;
@@ -12,3 +12,11 @@
 .tempform-table {
 	margin-top: 13px;
 }
+
+
+/*
+.arrage-pepople-dialog .el-table  .el-table__body-wrapper .el-table_1_column_20 {
+  {
+    padding: 0 !important:
+  }
+}*/

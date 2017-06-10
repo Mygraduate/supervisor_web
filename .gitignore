@@ -7,3 +7,4 @@ test/e2e/reports
 selenium-debug.log
 /*.rar
 /src - 副本
+/server

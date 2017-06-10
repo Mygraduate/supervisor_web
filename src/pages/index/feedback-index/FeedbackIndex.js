@@ -2,7 +2,7 @@
  * @Author: Rhymedys
  * @Date:   2017-02-02 16:22:21
  * @Last Modified by: Rhymedys
- * @Last Modified time: 2017-05-27 07:46:49
+ * @Last Modified time: 2017-05-31 16:25:56
  */
 
 'use strict'
@@ -137,6 +137,9 @@ export default {
       } else {
         commonUtils.showMsg({context: that, msg: '没有听课安排'})
       }
+    },
+    exportFile:function(){
+        window.open(`${window.location.protocol}//${window.location.host}/sas/api/excel/export/evaluate?cid=${Number(localStorage.getItem('loginCollegeId'))}`)
     }
 
   }

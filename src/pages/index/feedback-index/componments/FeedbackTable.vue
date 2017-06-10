@@ -1,32 +1,32 @@
 <template>
   <div class="block">
     <el-row :gutter="20" class="mg-top10 mg-left10 mg-bottom10">
-      <el-col :span="6">教师姓名：
-        <el-input style="width:200px;" v-model="searchTeacherInput" placeholder="请输入教师姓名"></el-input>
+      <el-col  :xs="4" :sm="6" :md="8" :lg="8" >教师姓名：
+        <el-input style="width:60%;" v-model="searchTeacherInput" placeholder="请输入教师姓名"></el-input>
       </el-col>
-      <el-col v-if="showStatusSelection" :span="6">状态：
-        <el-select v-model="selectedStatus" placeholder="请选择">
+      <el-col v-if="showStatusSelection"  :xs="4" :sm="6" :md="8" :lg="8">状态：
+        <el-select v-model="selectedStatus" placeholder="请选择" style="width:60%;">
           <el-option v-for="item in selectStatusList" :key="item.value" :label="item.name" :value="item.value">
           </el-option>
         </el-select>
       </el-col>
-      <el-col :span="6" v-if="showWeekSelected">周数：
-        <el-select v-model="selectedWeek" placeholder="请选择">
+      <el-col  :xs="4" :sm="6" :md="8" :lg="8" v-if="showWeekSelected">周数：
+        <el-select v-model="selectedWeek" placeholder="请选择" style="width:60%;">
           <el-option v-for="item in 20" :key="item" :label="item" :value="item">
           </el-option>
         </el-select>
       </el-col>
-      <el-col :span="6" v-if="showDaySelected">星期：
-        <el-select v-model="selectedDay" placeholder="请选择">
+      <el-col  :xs="4" :sm="6" :md="8" :lg="8" v-if="showDaySelected">星期：
+        <el-select v-model="selectedDay" placeholder="请选择" style="width:60%;">
           <el-option v-for="item in selectDayList" :key="item.value" :label="item.name" :value="item.value">
           </el-option>
         </el-select>
       </el-col>
-      <el-col :span="6" v-if="showDateSelected">日期：
+      <el-col  :xs="4" :sm="6" :md="8" :lg="8"v-if="showDateSelected">日期：
        <el-date-picker
           v-model="selectedDate"
           type="daterange"
-          placeholder="选择日期范围">
+          placeholder="选择日期范围" style="width:60%;">
         </el-date-picker>
       </el-col>
 
@@ -38,7 +38,7 @@
       <el-button @click="clickReset">重置</el-button>
       <el-button type="danger" :disabled="btnDeletedDisable" @click="btnDeleteClick({setlectedItemsList})" v-if="showMutiplyDeleteBtn">删除</el-button>
       <el-button type="primary" v-if="showAutoCreateBtn" @click="btnAutoCreateClick">自动排课</el-button>
-      <el-button type="primary" v-if="showExportExcelBtn" @click="btnExportClick({searchTeacherInput,selectedDay,selectedStatus,selectedWeek,setlectedItemsList,selectedDate})">导出Excel</el-button>
+      <el-button type="primary" v-if="showExportExcelBtn" @click="btnExportClick({searchTeacherInput,selectedDay,selectedStatus,selectedWeek,setlectedItemsList,selectedDate})">导出</el-button>
     </span>
     <!--table-->
     <el-table class="tempform-table" v-bind:data="tableDataResource" border style="width: 100%" ref="comfirmTable" @selection-change="selectionChange">
@@ -46,33 +46,31 @@
       </el-table-column>
       <el-table-column prop="arrage.course.name" label="课程" show-overflow-tooltip>
       </el-table-column>
-      <el-table-column prop="arrage.course.content" label="授课内容" show-overflow-tooltip v-if="showCourseContent">
+      <el-table-column prop="arrage.course.major" label="专业" show-overflow-tooltip>
       </el-table-column>
-      <el-table-column prop="arrage.course.type" label="授课方式" width="100">
+      <el-table-column prop="arrage.course.address" label="教室" show-overflow-tooltip>
       </el-table-column>
-      <el-table-column prop="arrage.course.major" label="专业" width="120">
+      <el-table-column prop="arrage.course.teacher" label="教师" show-overflow-tooltip>
       </el-table-column>
-      <el-table-column prop="arrage.course.address" label="教室" width="120">
+      <el-table-column prop="arrage.course.scope" label="节次" show-overflow-tooltip>
       </el-table-column>
-      <el-table-column prop="arrage.course.teacher" label="教师" width="120">
-      </el-table-column>
-      <el-table-column prop="arrage.course.scope" label="节次" width="80">
-      </el-table-column>
-      <el-table-column prop="arrage.course.time" label="听课时间" width="120">
-      </el-table-column>
-      <el-table-column v-if="showArragePeople" prop="groups" label="督导人员安排" width="120">
-      </el-table-column>
-      <el-table-column v-if="showArragePeopleCount" label="督导人数" width="120">
-        <template scope="scope">
-          <span v-text="getItemArrargePeopleLength(scope.row.arrage)"></span>
+      <el-table-column prop="arrage.course.time" label="时间" show-overflow-tooltip>
+                <template scope="scope">
+          <span v-text="getItemTime(scope.row)"></span>
         </template>
+      </el-table-column>
+      <el-table-column v-if="showArragePeople" prop="groups" label="人员" show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column v-if="showArragePeopleCount" prop="grade" label="分数" show-overflow-tooltip>
+
       </el-table-column>
       <el-table-column prop="opertate" label="操作" width="180">
         <template scope="scope">
-          <el-button v-if="showCreateByHand" size="small" @click="btnItemCreateByHandClick(scope.$index, scope.row)">手动排课</el-button>
-          <el-button v-if="showChangeBtn" size="small" @click="btnItemChangeStatusClick(scope.$index, scope.row)">更改状态</el-button>
-          <el-button size="small" type="danger" v-if="showItemDeleteBtn" @click="btnItemDeleteClick(scope.$index, scope.row)">删除</el-button>
+          <el-button v-if="showCreateByHand" type="primary"  size="small" @click="btnItemCreateByHandClick(scope.$index, scope.row)">手动排课</el-button>
+          <el-button v-if="showChangeBtn" type="primary" size="small" @click="btnItemChangeStatusClick(scope.$index, scope.row)">更改状态</el-button>
           <el-button size="small" type="primary" v-if="showItemDownloadBtn" @click="btnItemDownloadClick(scope.$index, scope.row)">下载</el-button>
+          <el-button size="small" type="danger" v-if="showItemDeleteBtn" @click="btnItemDeleteClick(scope.$index, scope.row)">删除</el-button>
+
         </template>
       </el-table-column>
     </el-table>
@@ -85,6 +83,7 @@
 
 <script>
 let currentPageName = "feedback-table";
+import {getDay} from '../../../../utils/CommonUtils'
 
 export default {
   name: currentPageName,
@@ -377,6 +376,19 @@ export default {
         }
       })
 
+    },
+        getItemTime:function(item){
+      let time=''
+      if(item&&item.arrage&&item.arrage.course){
+        if(item.arrage.course.time){
+           time=item.arrage.course.time
+          if(item.arrage.course.week&&item.arrage.course.day){
+            time =`${time}(第${item.arrage.course.week}周,星期${getDay (item.arrage.course.day)}）`
+          }
+        }
+      }
+
+      return time
     }
   }
 

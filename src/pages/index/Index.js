@@ -1,8 +1,8 @@
 /*
  * @Author: Rhymedys
  * @Date:   2017-02-02 16:22:21
- * @Last Modified by: Rhymedys
- * @Last Modified time: 2017-05-23 12:52:27
+ * @Last Modified by:   Rhymedys
+ * @Last Modified time: 2017-06-01 23:58:38
  */
 
 'use strict'
@@ -45,7 +45,11 @@ export default {
 
     getRoleName: function () {
       return localStorage.getItem('loginRoleName')
-    }
+    },
+        getUserName: function () {
+      return localStorage.getItem('loginUsername')
+    },
+    
   },
   watch : {
     $route: function (value) {
@@ -57,7 +61,7 @@ export default {
 
     handleCommand: function (command) {
       let that = this
-      alert(command)
+
       if (command === 'logout') {
         that
           .$router

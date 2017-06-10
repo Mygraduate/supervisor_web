@@ -1,8 +1,8 @@
 /*
  * @Author: Rhymedys
  * @Date:   2017-01-31 21:10:20
- * @Last Modified by:   Rhymedys
- * @Last Modified time: 2017-05-27 01:38:18
+ * @Last Modified by: Rhymedys
+ * @Last Modified time: 2017-06-02 16:08:05
  */
 
 'use strict'
@@ -91,15 +91,15 @@ module.exports = {
         : 'Hello', obj.title
         ? obj.title
         : '提示', {
-          type: obj.type
+        type: obj.type
           ? obj.type
           : 'warning',
-          showCancelButton: obj.showCancelButton
+        showCancelButton: obj.showCancelButton
           ? obj.showCancelButton
           : false,
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          beforeClose: (action, instance, done) => {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        beforeClose: (action, instance, done) => {
           if (action === 'cancel') {
             done()
           }
@@ -108,7 +108,7 @@ module.exports = {
             ? obj.beforeClose(action, instance, done)
             : done()
         }
-        }).then((action) => {
+      }).then((action) => {
         obj.complete
           ? obj.complete(action)
           : null
@@ -171,8 +171,7 @@ module.exports = {
 
   // getQueryString: function (name) {   var reg = new RegExp('(^|&)' + name +
   // '=([^&]*)(&|$)')   var r = window     .location     .search     .substr(1)
-  //  .match(reg)   if (r != null) {     return unescape(r[2])   }   return null
-  // },
+  // .match(reg)   if (r != null) {     return unescape(r[2])   }   return null },
 
   containChinese: function (strUrl) {
     return !!strUrl.match(/[\u2E80-\u2EFF\u2F00-\u2FDF\u3000-\u303F\u31C0-\u31EF\u3200-\u32FF\u3300-\u33FF\u3400-\u4DBF\u4DC0-\u4DFF\u4E00-\u9FBF\uF900-\uFAFF\uFE30-\uFE4F\uFF00-\uFFEF]+/g)
@@ -223,7 +222,7 @@ module.exports = {
     }
   },
 
-  getAllParamsStr () {
+  getAllParamsStr() {
     try {
       var strUrl = window.location.href
       var num = strUrl.indexOf('?')
@@ -260,7 +259,7 @@ module.exports = {
     return '/^#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})$/'.test(value) || '/^[rR][gG][Bb][Aa]?[\(]([\s]*(2[0-4][0-9]|25[0-5]|[01]?[0-9][0-9]?),){2}[\s]*(2[' +
       '0-4][0-9]|25[0-5]|[01]?[0-9][0-9]?),?[\s]*(0\.\d{1,2}|1|0)?[\)]{1}$/g'.test(value)
   },
-  openSelectFilesDialog (context, event) {
+  openSelectFilesDialog(context, event) {
     try {
       if (event.target !== context.$refs.fileinput) {
         event.preventDefault()
@@ -277,7 +276,7 @@ module.exports = {
   },
 
   // check files
-  checkFiles (files) {
+  checkFiles(files) {
     var fileNum = files.length
     // 是否文件为空
     if (fileNum == 0) {
@@ -344,7 +343,7 @@ module.exports = {
 
     return result
   },
-  transSpareTimeToWholeSpareTime:function(spareList,courseCount){
+  transSpareTimeToWholeSpareTime: function (spareList, courseCount) {
     let content = {
       'day1': [],
       'day2': [],
@@ -356,7 +355,6 @@ module.exports = {
     }
 
     let spareTimeToDayObj = this.transSpareTimeToDayObj(spareList)
-
 
     for (let i = 1; i <= courseCount; i++) {
       content['day1'].push(spareTimeToDayObj['day1'].includes(i.toString()))
@@ -370,29 +368,56 @@ module.exports = {
 
     return content
   },
-  initTimeFormat:function () {
-  Date.prototype.format = function (fmt) {
-    var o = {
-      'M+': this.getMonth() + 1, // 月份
-      'd+': this.getDate(), // 日
-      'h+': this.getHours(), // 小时
-      'm+': this.getMinutes(), // 分
-      's+': this.getSeconds(), // 秒
-      'q+': Math.floor((this.getMonth() + 3) / 3), // 季度
-      'S': this.getMilliseconds() // 毫秒
-    }
-    if (/(y+)/.test(fmt)) {
-      fmt = fmt.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length))
-    }
-    for (var k in o) {
-      if (new RegExp('(' + k + ')').test(fmt)) {
-        fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1)
-          ? (o[k])
-          : (('00' + o[k]).substr(('' + o[k]).length)))
+  initTimeFormat: function () {
+    Date.prototype.format = function (fmt) {
+      var o = {
+        'M+': this.getMonth() + 1, // 月份
+        'd+': this.getDate(), // 日
+        'h+': this.getHours(), // 小时
+        'm+': this.getMinutes(), // 分
+        's+': this.getSeconds(), // 秒
+        'q+': Math.floor((this.getMonth() + 3) / 3), // 季度
+        'S': this.getMilliseconds() // 毫秒
       }
+      if (/(y+)/.test(fmt)) {
+        fmt = fmt.replace(RegExp.$1, (this.getFullYear() + '').substr(4 - RegExp.$1.length))
+      }
+      for (var k in o) {
+        if (new RegExp('(' + k + ')').test(fmt)) {
+          fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1)
+            ? (o[k])
+            : (('00' + o[k]).substr(('' + o[k]).length)))
+        }
+      }
+      return fmt
     }
-    return fmt
+  },
+  getDay: function (day) {
+    switch (day) {
+      case 1:
+        return '一'
+        break;
+      case 2:
+        return '二'
+        break;
+      case 3:
+        return '三'
+        break;
+      case 4:
+        return '四'
+        break;
+      case 5:
+        return '五'
+        break;
+      case 6:
+        return '六'
+        break;
+      case 7:
+        return '日'
+        break;
+      default:
+        break;
+    }
   }
-}
 
 }

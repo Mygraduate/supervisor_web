@@ -15,13 +15,13 @@
           </el-table-column>
           <el-table-column prop="id" label="id" width="120">
           </el-table-column>
-          <el-table-column prop="name" label="名称">
+          <el-table-column prop="name" label="名称" show-overflow-tooltip>
           </el-table-column>
           <el-table-column prop="des" label="描述" width="120" show-overflow-tooltip>
           </el-table-column>
           <el-table-column prop="opertate" label="操作" width="180">
               <template scope="scope">
-                  <el-button size="small" @click="showDialog(scope.row)">修改</el-button>
+                  <el-button size="small" type="primary" @click="showDialog(scope.row)">修改</el-button>
                 <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
               </template>
             </el-table-column>
@@ -33,7 +33,7 @@
       </el-tab-pane>
     </el-tabs>
 
-    <el-dialog :title="dialogTitle" v-model="dialogFormVisible"  :modal="false" :show-close="false">
+    <el-dialog :title="dialogTitle" v-model="dialogFormVisible"   :show-close="false">
       <el-form :model="dialogForm">
         <el-form-item v-if="dialogType==='UPDATE'"  label="学院ID：" :label-width="formLabelWidth">
           <el-input v-model="dialogForm.id" :readonly="true" auto-complete="off" ></el-input>

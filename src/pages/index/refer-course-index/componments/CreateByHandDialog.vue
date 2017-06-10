@@ -1,28 +1,28 @@
 <template>
-  <el-dialog :title="'手动排课'" v-model="showDialog" :modal="false" :show-close="false" :close-on-click-modal="false" size="tiny">
+  <el-dialog :title="'手动排课'" v-model="showDialog" :show-close="false" :close-on-click-modal="false" size="tiny">
     <el-form ref="form" :model="dialogData" :label-position="'right'" label-width="100px">
       <el-form-item label="课程名称：">
-        {{dialogData.course&&dialogData.course.name?dialogData.course.name:''}}
+        {{dialogData.name?dialogData.name:''}}
       </el-form-item>
       <el-form-item label="授课内容：">
-        {{dialogData.course&&dialogData.course.content?dialogData.course.content:''}}
+        {{dialogData.content?dialogData.content:''}}
       </el-form-item>
       <el-form-item label="授课教师：">
-        {{dialogData.course&&dialogData.course.teacher?dialogData.course.teacher:''}}
+        {{dialogData.teacher?dialogData.teacher:''}}
       </el-form-item>
       <el-form-item label="授课时间：">
-        {{dialogData.course&&dialogData.course.time?dialogData.course.time:''}}{{getCourseDay}}
+        {{dialogData.time?dialogData.time:''}}{{getCourseDay}}
       </el-form-item>
       <el-form-item label="地点：">
-        {{dialogData.course&&dialogData.course.address?dialogData.course.address:''}}
+        {{dialogData.address?dialogData.address:''}}
       </el-form-item>
       <el-form-item label="节次：">
-        {{dialogData.course&&dialogData.course.scope?dialogData.course.scope:''}}
+        {{dialogData.scope?dialogData.scope:''}}
       </el-form-item>
       <el-form-item label="督导成员：">
         <el-select v-model="groupsValue" multiple placeholder="请选择">
-          <el-option v-for="item in getWholeSelecGroupList" :key="item.userName" :label="item.userName" :value="item.userName">
-            <span style="float: left">{{ item.userName }}</span>
+          <el-option v-for="item in getWholeSelecGroupList" :key="item.userId" :label="getSupervisorLable(item)" :value="item.userId">
+            <span style="float: left">{{getSupervisorLable(item)}}</span>
             <span style="float: right; color: #8492a6; font-size: 13px">{{ item.recomamdText?item.recomamdText:'' }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
           </el-option>
         </el-select>
@@ -31,7 +31,7 @@
 
     <div slot="footer" class="dialog-footer">
       <el-button @click="btnCancel(),groupsValue=[]">取 消</el-button>
-      <el-button type="primary" @click="btnOk(groupsValue,dialogData),groupsValue=[]">确 定</el-button>
+      <el-button type="primary" @click="btnOk(groupsValue,dialogData),groupsValue=[]" :loading="btnOkLoading">确 定</el-button>
     </div>
   </el-dialog>
 </template>
@@ -97,6 +97,10 @@ export default {
       default: function () {
         return []
       }
+    },
+    btnOkLoading:{
+      type:Boolean,
+      default:false
     }
 
   },
@@ -130,7 +134,6 @@ export default {
         return Object.assign({}, value, { recomamdText: '推荐' })
       })
 
-      alert
 
       tempArray = recommandList.concat(unRecommandList)
 
@@ -219,7 +222,13 @@ export default {
 
   },
   methods: {
-
+    getSupervisorLable(item){
+      if(item.teacherName){
+        return item.teacherName
+      }else if(item.userName){
+        return item.userName
+      }
+    }
   }
 
 }

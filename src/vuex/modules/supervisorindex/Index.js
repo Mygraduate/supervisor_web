@@ -1,8 +1,8 @@
 /*
  * @Author: Rhymedys
  * @Date:   2017-01-31 14:10:32
- * @Last Modified by: Rhymedys
- * @Last Modified time: 2017-05-26 22:36:31
+ * @Last Modified by:   Rhymedys
+ * @Last Modified time: 2017-06-05 00:41:21
 
  *https://vuex.vuejs.org/zh-cn/intro.html
  */
@@ -103,6 +103,9 @@ const actions = {
               : null
           })
         }
+      },
+      complete(res){
+        obj.complete?obj.complete(res):null
       }
     })
   },
@@ -199,6 +202,9 @@ const actions = {
             ? obj.success(res)
             : null
         }
+      },
+      complete(res){
+        obj.complete?obj.complete(res):null
       }
     })
   },

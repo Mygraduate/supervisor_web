@@ -1,8 +1,8 @@
 /*
  * @Author: Rhymedys
  * @Date:   2017-01-31 14:10:32
- * @Last Modified by:   Rhymedys
- * @Last Modified time: 2017-05-27 01:28:32
+ * @Last Modified by: Rhymedys
+ * @Last Modified time: 2017-06-04 20:11:52
  */
 
 'use strict'
@@ -65,7 +65,13 @@ const getters = {
           : '',
         teacherId: value.user && value.user.teacher && value.user.teacher.id
           ? value.user.teacher.id
-          : ''
+          : '',
+        teacherName: value.user && value.user.teacher && value.user.teacher.name
+          ? value.user.teacher.name
+          : '',
+        isSynchro: value.user && value.user.isSynchro
+          ? value.user.userisSynchro
+          : 0
       }
 
       tempList.push(tempObj)
@@ -116,7 +122,13 @@ const getters = {
           : null,
         teacherId: value.user && value.user.teacher && value.user.teacher.id
           ? value.user.teacher.id
-          : ''
+          : '',
+        teacherName: value.user && value.user.teacher && value.user.teacher.name
+          ? value.user.teacher.name
+          : '',
+        isSynchro: value.user && value.user.isSynchro
+          ? value.user.userisSynchro
+          : 0
       }
 
       tempList.push(tempObj)

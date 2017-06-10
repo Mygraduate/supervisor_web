@@ -2,7 +2,7 @@
  * @Author: Rhymedys
  * @Date:   2017-02-02 16:22:21
  * @Last Modified by: Rhymedys
- * @Last Modified time: 2017-05-26 20:57:31
+ * @Last Modified time: 2017-06-02 16:11:59
  */
 
 'use strict'
@@ -73,37 +73,26 @@ export default {
     let that = this
     that.requestCourseList({})
     setTimeout(() => {
-      that.requestTeacherList({pageSize: 600})
+      that.requestTeacherListAll({})
     }, 1000)
     setTimeout(() => {
       that.requestCollegeAll()
     }, 500)
-  },
-  beforeMount : function () {
-    commonUtils.log('--ProgressIndex.Vue--Lifecycle:beforeMount')
-  },
-  mounted : function () {
-    commonUtils.log('--ProgressIndex.Vue--Lifecycle:mounted', this)
-  },
-  updated : function () {
-    commonUtils.log('--ProgressIndex.Vue--Lifecycle:updated')
-  },
-  activated : function () {
-    commonUtils.log('--ProgressIndex.Vue--Lifecycle:activated')
-  },
-  deactivated : function () {
-    commonUtils.log('--ProgressIndex.Vue--Lifecycle:deactivated')
   },
   beforeDestroy : function () {
     commonUtils.log('--ProgressIndex.Vue--Lifecycle:beforeDestroy')
     let that = this
     that.resetProgressContent()
   },
-  destroyed : function () {
-    commonUtils.log('--ProgressIndex.Vue--Lifecycle:destroyed')
-  },
   computed : {
-    ...mapGetters(['getCourseList', 'getCourseListElements', 'getTeacherList', 'getProfessionalList', 'getAllCollegeList']),
+    ...mapGetters([
+      'getCourseList',
+      'getCourseListElements',
+      'getTeacherList',
+      'getProfessionalList',
+      'getAllCollegeList',
+      'getAllTeacherList'
+    ]),
     getAllLoaded: function () {
       let that = this
       let result = true
@@ -157,13 +146,13 @@ export default {
               courseCurrentPage: ''
             }
           })
-        that.resetProgressContent()
       } else {
         if (that.courseCurrentPage !== 1) {
           that.courseCurrentPage = 1
         } else {
           that.requestCourseList({})
           that.requestCollegeAll()
+          that.requestTeacherListAll({})
         }
       }
     },
@@ -171,7 +160,7 @@ export default {
       if (value.trim().length > 0) {
         this.selectedProfressional = ''
         let tempArray = this
-          .getTeacherList
+          .getAllTeacherList
           .filter((element) => {
             return element.name === value
           })
@@ -182,9 +171,28 @@ export default {
   },
   methods : {
     ...mapMutations(['resetProgressContent', 'resetProfessionalList']),
-    ...mapActions(['requestCourseList', 'requestTeacherList', 'requestProfessional', 'requestCollegeAll', 'requestExportWord']),
+    ...mapActions([
+      'requestCourseList',
+      'requestTeacherList',
+      'requestProfessional',
+      'requestCollegeAll',
+      'requestExportWord',
+      'requestTeacherListAll'
+    ]),
     exportSelectedTeacher: function (tid) {
       let that = this
+    },
+    getUploadStateStyle: function (uploadState) {
+
+      if (uploadState === '成功') {
+        return '#13CE66'
+
+      } else if (uploadState === '失败') {
+        return '#FF4949'
+
+      } else {
+        return '#8492A6'
+      }
     },
     clickCourseReset: function () {
       let that = this
@@ -238,6 +246,7 @@ export default {
             courseCurrentPage: that.courseCurrentPage
           }
         })
+
       that.requestCourseList({
         major: selectedProfressional,
         collegeId: selectedCollege,
@@ -248,7 +257,6 @@ export default {
       })
     },
     handleCourseCurrentChange(page) {
-      alert(page)
       let that = this
       let {selectedTeacher, selectedProfressional, selectedCollege, selectedWeek, selectedDay} = that.$route.query
       that
@@ -260,9 +268,10 @@ export default {
             courseCurrentPage: page
           }
         })
+      that.courseCurrentPage = page
       that.requestCourseList({
-        major: selectedTeacher,
-        teacher: selectedProfressional,
+        major: selectedProfressional,
+        teacher: selectedTeacher,
         collegeId: selectedCollege,
         week: selectedWeek,
         day: selectedDay,
@@ -284,7 +293,7 @@ export default {
             .importFilesList
             .push({
               fileId: commonUtils.getUUID(),
-              uploadState: 'ready',
+              uploadState: '就绪',
               name: files[i].name,
               formData
             })
@@ -308,18 +317,21 @@ export default {
         .forEach((element, index) => {
           if (element.uploadState !== 'success') {
             (({body, fileId, success, fail, complete}) => {
-              that.importFilesList[index].uploadState = 'uploading'
+              that.importFilesList[index].uploadState = '上传中'
               apiUploadExcel({body, emulateJSON: true, success, fail, complete})
             })({
               body: element.formData,
               fileId: element.fileId,
               complete: (res) => {
                 if (res.data && res.data.code === 1) {
-                  that.importFilesList[index].uploadState = 'success'
-                  that.importFilesList[index].msg = '上传成功'
+                  that.importFilesList[index].uploadState = '成功'
+                  that.importFilesList[index].msg = res.data && res.data.data
+                    ? res.data.data:'上传成功'
                 } else {
-                  that.importFilesList[index].uploadState = 'fail'
-                  that.importFilesList[index].msg = '上传失败'
+                  that.importFilesList[index].uploadState = '失败'
+                  that.importFilesList[index].msg = res.data && res.data.data
+                    ? res.data.data
+                    : '上传失败'
                 }
               }
             })
@@ -334,6 +346,7 @@ export default {
       }
 
       that.courseCurrentPage = 1
+
       that
         .$router
         .replace({
@@ -358,13 +371,27 @@ export default {
         page: 1,
         success(res) {
           if (res.data.data.content && res.data.data.content.length > 0) {
-            that.requestExportWord({major: selectedProfressional, teacher: selectedTeacher, collegeId: selectedCollege, week: selectedWeek, day: selectedDay})
+
+            window.open(`${window.location.protocol}//${window.location.host}/sas/api/word/export?cid=${selectedCollege}&teacher=${selectedTeacher}&week=${selectedWeek}&major=${selectedProfressional}&day=${selectedDay}`)
+
           } else {
             commonUtils.showMsg({context: that, msg: '该用户没有数据'})
           }
         }
       })
+    },
+    getItemTime:function(item){
+      let time=''
+      if(item){
+        if(item.time){
+           time=item.time
+          if(item.week&&item.day){
+            time =`${time}(第${item.week}周,星期${commonUtils.getDay (item.day)}）`
+          }
+        }
+      }
 
+      return time
     }
   }
 }

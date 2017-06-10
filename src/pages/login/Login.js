@@ -54,6 +54,7 @@ export default {
             username: that.getInputAccount,
             password: that.getInputPWD
           },
+          showMsg:true,
           success: function (res) {
             let query = null
             if (res.data && res.data.data && res.data.data.token) {
@@ -62,6 +63,7 @@ export default {
               localStorage.setItem('loginCollegeId', res.data.data.user.user.college.id)
               localStorage.setItem('loginRoleId', res.data.data.user.roleId)
               localStorage.setItem('loginRoleName', res.data.data.user.role.name)
+              localStorage.setItem('loginUsername', res.data.data.user.user.username)
 
               query = {
                 userId: res.data.data.user.id,

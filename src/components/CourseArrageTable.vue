@@ -1,78 +1,78 @@
 <template>
-  <div class="block">
+  <div>
     <el-row :gutter="20" class="mg-top10 mg-left10 mg-bottom10">
-      <el-col :span="6">教师姓名：
-        <el-input style="width:200px;" v-model="searchTeacherInput" placeholder="请输入教师姓名"></el-input>
+      <el-col   :xs="4" :sm="6" :md="8" :lg="8">教师姓名：
+        <el-input style="width:60%;" v-model="searchTeacherInput" placeholder="请输入教师姓名"></el-input>
       </el-col>
-      <el-col v-if="showStatusSelection" :span="6">状态：
-        <el-select v-model="selectedStatus" placeholder="请选择">
+      <el-col v-if="showStatusSelection"  :xs="4" :sm="6" :md="8" :lg="8">状态：
+        <el-select v-model="selectedStatus" placeholder="请选择" style="width:60%;">
           <el-option v-for="item in selectStatusList" :key="item.value" :label="item.name" :value="item.value">
           </el-option>
         </el-select>
       </el-col>
-      <el-col :span="6" v-if="showWeekSelected">周数：
-        <el-select v-model="selectedWeek" placeholder="请选择">
+      <el-col    :xs="4" :sm="6" :md="8" :lg="8"v-if="showWeekSelected">周数：
+        <el-select v-model="selectedWeek" placeholder="请选择" style="width:60%;">
           <el-option v-for="item in 20" :key="item" :label="item" :value="item">
           </el-option>
         </el-select>
       </el-col>
-      <el-col :span="6" v-if="showDaySelected">星期：
-        <el-select v-model="selectedDay" placeholder="请选择">
+      <el-col  :xs="4" :sm="6" :md="8" :lg="8" v-if="showDaySelected">星期：
+        <el-select v-model="selectedDay" placeholder="请选择" style="width:60%;">
           <el-option v-for="item in selectDayList" :key="item.value" :label="item.name" :value="item.value">
           </el-option>
         </el-select>
       </el-col>
-      <el-col :span="6" v-if="showDateSelected">日期：
-       <el-date-picker
-          v-model="selectedDate"
-          type="daterange"
-          placeholder="选择日期范围">
+      <el-col :xs="4" :sm="6" :md="8" :lg="8"  v-if="showDateSelected">日期：
+        <el-date-picker v-model="selectedDate" type="daterange" placeholder="选择日期范围" style="width:60%;">
         </el-date-picker>
       </el-col>
 
-  
-
     </el-row>
     <span class="wrapper  mg-bottom10" style="float:right;margin-right:20px">
-      <el-button type="primary" @click="clickSearch(),btnSearchClick({searchTeacherInput,selectedDay,selectedStatus,selectedWeek,setlectedItemsList,selectedDate})" :disabled="getBtnSearchDisabled">搜索</el-button>
+      <el-button  type="primary" @click="clickSearch(),btnSearchClick({searchTeacherInput,selectedDay,selectedStatus,selectedWeek,setlectedItemsList,selectedDate})" :disabled="getBtnSearchDisabled">搜索</el-button>
       <el-button @click="clickReset">重置</el-button>
-      <el-button type="danger" :disabled="btnDeletedDisable" @click="btnDeleteClick({setlectedItemsList})" v-if="showMutiplyDeleteBtn">删除</el-button>
+
       <el-button type="primary" v-if="showAutoCreateBtn" @click="btnAutoCreateClick">自动排课</el-button>
-      <el-button type="primary" v-if="showExportExcelBtn" @click="btnExportClick({searchTeacherInput,selectedDay,selectedStatus,selectedWeek,setlectedItemsList,selectedDate})">导出Excel</el-button>
+      <el-button type="primary" v-if="showExportExcelBtn" @click="btnExportClick({searchTeacherInput,selectedDay,selectedStatus,selectedWeek,setlectedItemsList,selectedDate})">导出</el-button>
+      <el-button type="success" :disabled="btnDeletedDisable"   v-if="showSendArrageBtn" :loading="sendingArrage" @click="btnSendArrageClick({searchTeacherInput,selectedDay,selectedStatus,selectedWeek,setlectedItemsList,selectedDate})">发送听课安排</el-button>
+      <el-button type="success"  v-if="showStatisticsBtn" @click="btnStatisticsClick({searchTeacherInput,selectedDay,selectedStatus,selectedWeek,setlectedItemsList,selectedDate})">统计</el-button>
+      <el-button type="danger" :disabled="btnDeletedDisable" @click="btnDeleteClick({setlectedItemsList})" v-if="showMutiplyDeleteBtn">删除</el-button>
     </span>
     <!--table-->
-    <el-table class="tempform-table" v-bind:data="tableDataResource" border style="width: 100%" ref="comfirmTable" @selection-change="selectionChange">
+    <el-table class="tempform-table" v-bind:data="tableDataResource" border  ref="comfirmTable" @selection-change="selectionChange" >
       <el-table-column v-if="showMutiplyDeleteBtn" type="selection" width="55">
       </el-table-column>
       <el-table-column prop="course.name" label="课程" show-overflow-tooltip>
       </el-table-column>
-      <el-table-column prop="course.content" label="授课内容" show-overflow-tooltip v-if="showCourseContent">
+      <el-table-column prop="course.major" label="专业"show-overflow-tooltip>
       </el-table-column>
-      <el-table-column prop="course.type" label="授课方式" width="100">
+      <el-table-column prop="course.address" label="教室" show-overflow-tooltip>
       </el-table-column>
-      <el-table-column prop="course.major" label="专业" width="120">
+      <el-table-column prop="course.teacher" label="教师" show-overflow-tooltip>
       </el-table-column>
-      <el-table-column prop="course.address" label="教室" width="120">
+      <el-table-column prop="course.scope" label="节次" show-overflow-tooltip>
       </el-table-column>
-      <el-table-column prop="course.teacher" label="教师" width="120">
+      <el-table-column prop="course.time" label="时间" show-overflow-tooltip>
+          <template scope="scope">
+          <span v-text="getItemTime(scope.row)"></span>
+        </template>
       </el-table-column>
-      <el-table-column prop="course.scope" label="节次" width="80">
+      <el-table-column v-if="showArragePeople" prop="groups" label="人员" show-overflow-tooltip>
       </el-table-column>
-      <el-table-column prop="course.time" label="听课时间" width="120">
-      </el-table-column>
-      <el-table-column v-if="showArragePeople" prop="groups" label="督导人员安排" width="120">
-      </el-table-column>
-      <el-table-column v-if="showArragePeopleCount" label="督导人数" width="120">
+      <el-table-column v-if="showArragePeopleCount" label="督导人数" show-overflow-tooltip>
         <template scope="scope">
           <span v-text="getItemArrargePeopleLength(scope.row)"></span>
         </template>
       </el-table-column>
-      <el-table-column prop="opertate" label="操作" width="180">
+      <el-table-column prop="opertate" label="操作" width="250" >
         <template scope="scope">
-          <el-button v-if="showCreateByHand" size="small" @click="btnItemCreateByHandClick(scope.$index, scope.row)">手动排课</el-button>
-          <el-button v-if="showChangeBtn" size="small" @click="btnItemChangeStatusClick(scope.$index, scope.row)">更改状态</el-button>
-          <el-button size="small" type="danger" v-if="showItemDeleteBtn" @click="btnItemDeleteClick(scope.$index, scope.row)">删除</el-button>
+          <el-button v-if="showCreateByHand" type="primary" size="small" @click="btnItemCreateByHandClick(scope.$index, scope.row)">手动排课</el-button>
+          <el-button v-if="showChangeBtn"  type="primary" size="small" @click="btnItemChangeStatusClick(scope.$index, scope.row)">保存</el-button>
           <el-button size="small" type="primary" v-if="showItemDownloadBtn" @click="btnItemDownloadClick(scope.$index, scope.row)">下载</el-button>
+          <el-button size="small" type="primary" v-if="showItemSendArrageBtn" @click="btnItemSendArrageClick(scope.$index, scope.row)" >发送安排</el-button>
+          <el-button size="small" type="primary" v-if="showItemArragePeople" @click="btnItemArragePeopleClick(scope.$index, scope.row ,{searchTeacherInput,selectedDay,selectedStatus,selectedWeek,setlectedItemsList,selectedDate})">人员安排</el-button>
+          <el-button size="small" type="danger" v-if="showItemDeleteBtn" @click="btnItemDeleteClick(scope.$index, scope.row)">删除</el-button>
+
         </template>
       </el-table-column>
     </el-table>
@@ -85,6 +85,7 @@
 
 <script>
 let currentPageName = "course-arrage-table";
+import {getDay} from '../utils/CommonUtils'
 
 export default {
   name: currentPageName,
@@ -94,7 +95,7 @@ export default {
       selectedWeek: '',
       selectedDay: '',
       selectedStatus: '',
-      selectedDate:'',
+      selectedDate: '',
       setlectedItemsList: [],
       selectDayList: [{
         name: '星期一',
@@ -150,12 +151,19 @@ export default {
       default: function () {
       }
     },
-    btnExportClick:{
-      type:Function,
-      default:function(){
+    btnExportClick: {
+      type: Function,
+      default: function () {
 
       }
     },
+btnSendArrageClick:{
+        type: Function,
+      default: function () {
+
+      }
+},
+
     btnItemDeleteClick: {
       type: Function,
       default: function () {
@@ -166,14 +174,19 @@ export default {
       default: function () {
       }
     },
+    btnItemSendArrageClick:{
+      type: Function,
+      default: function () {
+      }
+    },
     btnItemCreateByHandClick: {
       type: Function,
       default: function () {
       }
     },
-    btnItemDownloadClick:{
-      type:Function,
-      default:function(){
+    btnItemDownloadClick: {
+      type: Function,
+      default: function () {
       }
     },
     tableDataResource: {
@@ -184,7 +197,7 @@ export default {
     },
     currentPage: {
       type: Number,
-      default:1
+      default: 1
     },
     currentChange: {
       type: Function,
@@ -207,25 +220,25 @@ export default {
       type: Boolean,
       default: true
     },
-    showWeekSelected:{
-      type:Boolean,
-      default:true
+    showWeekSelected: {
+      type: Boolean,
+      default: true
     },
-    showDaySelected:{
-      type:Boolean,
-      default:true
+    showDaySelected: {
+      type: Boolean,
+      default: true
     },
-    showDateSelected:{
-      type:Boolean,
-      default:false
+    showDateSelected: {
+      type: Boolean,
+      default: false
     },
     showItemDeleteBtn: {
       type: Boolean,
       default: true
     },
-    showCourseContent:{
-      type:Boolean,
-      default:true
+    showCourseContent: {
+      type: Boolean,
+      default: true
     },
     showStatusSelection: {
       type: Boolean,
@@ -247,27 +260,58 @@ export default {
       type: Boolean,
       default: true
     },
-    showExportExcelBtn:{
+    showExportExcelBtn: {
+      type: Boolean,
+      default: false
+    },
+    showItemDownloadBtn: {
+      type: Boolean,
+      default: false
+    },
+    showItemSendArrageBtn:{
       type:Boolean,
       default:false
     },
-    showItemDownloadBtn:{
+    showSendArrageBtn:{
       type:Boolean,
       default:false
-    }
+    },
+    showItemArragePeople:{
+      type:Boolean,
+      default:false
+    },
+    btnItemArragePeopleClick:{
+      type:Function,
+      default:function(){}
+    },
+    btnStatisticsClick:{
+      type:Function,
+      default:function(){}
+    },
+    showStatisticsBtn:{
+      type:Boolean,
+      default:false
+    },
+    sendingArrage:{
+      type:Boolean,
+      default:false
+    },
+
+
+
 
 
   },
-  computed:{
-    getBtnSearchDisabled:function(){
+  computed: {
+    getBtnSearchDisabled: function () {
       let {
         selectedWeek,
         searchTeacherInput,
         selectedDay,
         selectedStatus,
         selectedDate
-      }=this
-      return !(selectedWeek>0||selectedDay>0||searchTeacherInput.trim().length>0||selectedStatus>0||selectedStatus===0||selectedDate.length>0)
+      } = this
+      return !(selectedWeek > 0 || selectedDay > 0 || searchTeacherInput.trim().length > 0 || selectedStatus > 0 || selectedStatus === 0 || selectedDate.length > 0)
     }
   },
   watch: {
@@ -340,7 +384,7 @@ export default {
       that.selectedWeek = ''
       that.selectedDay = ''
       that.selectedStatus = ''
-      that.selectedDate=''
+      that.selectedDate = ''
       that.setlectedItemsList = []
       setTimeout(() => {
         that.btnSearchDisable = true
@@ -373,10 +417,23 @@ export default {
           selectedWeek: that.selectedWeek,
           selectedDay: that.selectedDay,
           selectedStatus: that.selectedStatus,
-          selectedDate:that.selectedDate
+          selectedDate: that.selectedDate
         }
       })
 
+    },
+    getItemTime:function(item){
+      let time=''
+      if(item&&item.course){
+        if(item.course.time){
+           time=item.course.time
+          if(item.course.week&&item.course.day){
+            time =`${time}(第${item.course.week}周,星期${getDay (item.course.day)}）`
+          }
+        }
+      }
+
+      return time
     }
   }
 

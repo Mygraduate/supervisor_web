@@ -19,6 +19,7 @@
             :show-day-selected="false"
             :show-date-selected="true"
             :show-export-excel-btn="true"
+            :btn-export-click="exportFile"
             :is-reset-all="tableResetAll"></feedback-table>
   </div>
 </template>

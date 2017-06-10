@@ -1,64 +1,65 @@
 <template>
-  <el-dialog :title="'自动排课'" v-model="showAutoCreateDialog" :modal="false" :close-on-click-modal="false" :show-close="false" size="small">
+  <el-dialog :title="'自动排课'" v-model="showAutoCreateDialog"  :close-on-click-modal="false" :show-close="false" size="small">
     <el-form ref="autoCreateDialog" :label-position="'right'" label-width="120px" :rules="autoCreateDialogDataRule" :model="autoCreateDialogData">
       <el-form-item label="听课起始:" required>
-
-        <el-col style="width:217px">
-
+        <el-col  :xs="4" :sm="6" :md="7" :lg="7">
           <el-form-item prop="startWeek">
             <el-select v-model="autoCreateDialogData.startWeek" placeholder="起始周">
-
               <el-option v-for="item in 20" :key="item" :label="item.name" :value="item">
               </el-option>
             </el-select>
           </el-form-item>
-
         </el-col>
-
         <el-col style="text-align: center;" :span="1">-</el-col>
-
-        <el-col style="width:217px">
+        <el-col :xs="4" :sm="6" :md="7" :lg="7">
           <el-form-item prop="endWeek">
             <el-select v-model="autoCreateDialogData.endWeek" placeholder="终止周">
               <el-option v-for="item in 20" :key="item" :label="item" :value="item">
               </el-option>
             </el-select>
           </el-form-item>
+        </el-col>
+      </el-form-item>
 
+
+      <el-form-item label="督导人数:" required>
+        <el-col   :xs="4" :sm="6" :md="7" :lg="7" >
+          <el-form-item prop="minPeople">
+            <el-input v-model.number="autoCreateDialogData.minPeople" placeholder="最少人数" auto-complete="off"  style="max-width:217px"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col style="text-align: center;" :span="1">-</el-col>
+
+        <el-col  :xs="4" :sm="6" :md="7" :lg="7">
+          <el-form-item prop="maxPeople">
+            <el-input placeholder="最多人数" v-model.number="autoCreateDialogData.maxPeople" auto-complete="off" style="max-width:217px" ></el-input>
+          </el-form-item>
         </el-col>
 
       </el-form-item>
+
+
       <el-form-item label="听课起始日:" required prop="startDay">
         <el-select v-model="autoCreateDialogData.startDay" placeholder="起始日">
           <el-option v-for="item in selectDayList" :key="item.value" :label="item.name" :value="item.value">
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="督导人数:" required>
-        <el-col style="width:217px">
-          <el-form-item prop="minPeople">
-            <el-input v-model.number="autoCreateDialogData.minPeople" placeholder="最少人数" auto-complete="off" style="width:217px"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col style="text-align: center;" :span="1">-</el-col>
-        <el-col style="width:217px">
-          <el-form-item prop="maxPeople">
-            <el-input placeholder="最多人数" v-model.number="autoCreateDialogData.maxPeople" auto-complete="off" style="width:217px"></el-input>
-          </el-form-item>
-        </el-col>
 
-      </el-form-item>
       <el-form-item label="周听课次数:" prop="weekListen">
         <el-input v-model.number="autoCreateDialogData.weekListen" placeholder="次数" auto-complete="off" style="width:217px"></el-input>
       </el-form-item>
+
       <el-form-item label="日听课次数:" prop="dayListen">
         <el-input v-model.number="autoCreateDialogData.dayListen" placeholder="次数" auto-complete="off" style="width:217px"></el-input>
       </el-form-item>
+
       <el-form-item label="理论课占比例:" prop="apercent">
         <el-slider v-model="autoCreateDialogData.apercent" style="width:300px">
         </el-slider>
         {{autoCreateDialogData.apercent}}
       </el-form-item>
+
       <el-form-item label="总听课:" prop="total">
         <el-input v-model.number="autoCreateDialogData.total" placeholder="总听课" auto-complete="off" style="width:217px"></el-input>
       </el-form-item>
@@ -66,7 +67,7 @@
 
     <div slot="footer" class="dialog-footer">
       <el-button @click="btnCancel(),resetAll()">取 消</el-button>
-      <el-button type="primary" @click="btnOk(autoCreateDialogData)" :disabled="getBtnOkDisabled">{{autoCreateMode==='create'?'确 定':'重新排课'}}</el-button>
+      <el-button type="primary" @click="btnOk(autoCreateDialogData)" :disabled="getBtnOkDisabled">{{replaceMode?'重新排课':'确 定'}}</el-button>
     </div>
   </el-dialog>
 </template>
@@ -195,6 +196,10 @@ export default {
     isRestAll: {
       type: Boolean,
       default: false
+    },
+     replaceMode: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -221,7 +226,6 @@ export default {
   },
   watch: {
     isRestAll: function (value) {
-      // alert(value)
       let that = this
       if (value !== that.constValue) {
         this.resetAll()

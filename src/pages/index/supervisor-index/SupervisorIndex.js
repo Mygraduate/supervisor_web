@@ -2,7 +2,7 @@
  * @Author: Rhymedys
  * @Date:   2017-02-02 16:22:21
  * @Last Modified by: Rhymedys
- * @Last Modified time: 2017-05-26 23:04:55
+ * @Last Modified time: 2017-06-02 15:42:51
  */
 
 'use strict'
@@ -11,10 +11,18 @@ import commonUtils from '../../../utils/CommonUtils'
 import timeUtils from '../../../utils/TimeUtils'
 import Vue from 'vue'
 // vuex
-import {mapState, mapGetters, mapActions, mapMutations} from 'vuex'
+import {
+  mapState,
+  mapGetters,
+  mapActions,
+  mapMutations
+} from 'vuex'
 import * as mActions from '../../../vuex/Actions'
 import * as mGetters from '../../../vuex/Getters'
 import * as mMutations from '../../../vuex/Mutations'
+import PagerComponment from '../../../components/Pager'
+
+Vue.component(PagerComponment.name, PagerComponment)
 
 let constWholeSparaTime = {
   'day1': [],
@@ -29,7 +37,7 @@ let constWholeSparaTime = {
 const courseCount = 11
 
 export default {
-  name : 'cc-SupervisorIndex',
+  name: 'cc-SupervisorIndex',
   data() {
     return {
       btnDeleteDisable: true,
@@ -39,9 +47,14 @@ export default {
         name: ''
       },
       dialogFormVisible: false,
+      savingSparaTime:false,
+      autoCreatingSparaTime:false,
       formLabelWidth: '120px',
       dialogType: 'ADD',
+      preWeek: 1,
       selectedWeek: 1,
+      hadSave: false,
+
       listSelectedWeek: 1,
       hang: [
         1,
@@ -59,10 +72,10 @@ export default {
       wholeSpareList: Object.assign({}, constWholeSparaTime)
     }
   },
-  beforeCreate : function () {
+  beforeCreate: function () {
     commonUtils.log('--SupervisorIndex.Vue--Lifecycle:beforeCreate')
   },
-  created : function () {
+  created: function () {
     commonUtils.log('--SupervisorIndex.Vue--Lifecycle:created')
     let that = this
     that.requestSupervisorList({
@@ -70,34 +83,34 @@ export default {
       collegeId: Number(localStorage.getItem('loginCollegeId'))
     })
   },
-  beforeMount : function () {
+  beforeMount: function () {
     commonUtils.log('--SupervisorIndex.Vue--Lifecycle:beforeMount')
   },
-  mounted : function () {
+  mounted: function () {
     let that = this
     commonUtils.log('--SupervisorIndex.Vue--Lifecycle:mounted')
   },
-  updated : function () {
+  updated: function () {
     commonUtils.log('--SupervisorIndex.Vue--Lifecycle:updated')
   },
-  activated : function () {
+  activated: function () {
     commonUtils.log('--SupervisorIndex.Vue--Lifecycle:activated')
   },
-  deactivated : function () {
+  deactivated: function () {
     commonUtils.log('--SupervisorIndex.Vue--Lifecycle:deactivated')
   },
-  beforeDestroy : function () {
+  beforeDestroy: function () {
     commonUtils.log('--SupervisorIndex.Vue--Lifecycle:beforeDestroy')
     this.resetSupervisiorState()
   },
-  destroyed : function () {
+  destroyed: function () {
     commonUtils.log('--SupervisorIndex.Vue--Lifecycle:destroyed')
   },
-  components : {},
-  computed : {
+  components: {},
+  computed: {
     ...mapGetters(['getSupervisorList', 'getSupervisorListElements', 'getWholeSparaList'])
   },
-  watch : {
+  watch: {
     selectedWeek: function (week) {
       let that = this
       if (that.checkHadChangeCheckBox() && that.dialogFormVisible) {
@@ -108,16 +121,23 @@ export default {
           beforeClose(action, instance, done) {
             if (action === 'confirm') {
               that.requestSparaTimeUpdate({
-                body: that.getUpdateBody(),
+                body: that.getUpdateBody(that.preWeek),
                 success(res) {
                   if (week && that.dialogForm.userId) {
-                    that.doReuqestSpareList({userId: that.dialogForm.userId, selectedWeek: week})
+                    that.doReuqestSpareList({
+                      userId: that.dialogForm.userId,
+                      selectedWeek: week,
+                    })
                   }
                 }
               })
             } else if (action === 'cancel') {
               if (week && that.dialogForm.userId) {
-                that.doReuqestSpareList({userId: that.dialogForm.userId, selectedWeek: week})
+                that.doReuqestSpareList({
+                  userId: that.dialogForm.userId,
+                  selectedWeek: week,
+
+                })
               }
             }
             done()
@@ -125,21 +145,42 @@ export default {
         })
       } else {
         if (week && that.dialogForm.userId) {
-          that.doReuqestSpareList({userId: that.dialogForm.userId, selectedWeek: week})
+          that.doReuqestSpareList({
+            userId: that.dialogForm.userId,
+            selectedWeek: week,
+
+          })
         }
+      }
+    },
+    dialogFormVisible: function (value) {
+      if (value === false) {
+        this.handleDialogCancel()
       }
     }
     // listSelectedWeek: function (value) {   let that=this
     // that.requestSupervisorList({     ...that.$route.query,     coll   }) }
 
   },
-  methods : {
+  methods: {
     ...mapMutations(['resetSupervisiorState']),
     ...mapActions(['requestSupervisorList', 'requestDeleteSparaTime', 'reuqestSpareList', 'requestSparaTimeUpdate', 'reuqestSparaTimeAutoCreate']),
+    selectedWeekCurrentChange: function (oldPage, newPage) {
+      this.preWeek = oldPage
+      this.selectedWeek = newPage
+    },
     checkHadChangeCheckBox() {
       let that = this
-      const {wholeSpareList, getWholeSparaList} = that
+      const {
+        wholeSpareList,
+        getWholeSparaList,
+        hadSave
+      } = that
       let result = true
+      if (hadSave) {
+        return false
+      }
+
       for (let i = 0; i < courseCount; i++) {
         result = wholeSpareList.day1[i] === getWholeSparaList.day1[i] && wholeSpareList.day2[i] === getWholeSparaList.day2[i] && wholeSpareList.day3[i] === getWholeSparaList.day3[i] && wholeSpareList.day4[i] === getWholeSparaList.day4[i] && wholeSpareList.day5[i] === getWholeSparaList.day5[i] && wholeSpareList.day6[i] === getWholeSparaList.day6[i] && wholeSpareList.day7[i] === getWholeSparaList.day7[i]
 
@@ -173,6 +214,10 @@ export default {
         week: that.selectedWeek,
         success(res) {
           Object.assign(that.wholeSpareList, commonUtils.transSpareTimeToWholeSpareTime(res.data.data, courseCount))
+          that.hadSave = false
+        },
+        complete(res){
+          item.complete?item.complete(res):null
         }
       })
     },
@@ -199,10 +244,12 @@ export default {
      * 取消事件
      *
      */
-    handleDialogCancel() {
+    handleDialogCancel: function () {
       let that = this
       that.resetDialogForm()
-      that.dialogFormVisible = false
+      if (that.dialogFormVisible !== false) {
+        that.dialogFormVisible = false
+      }
       that.requestSupervisorList({
         ...that.$route.query,
         collegeId: Number(localStorage.getItem('loginCollegeId'))
@@ -263,18 +310,25 @@ export default {
      */
     getCurrentPage() {
       let that = this
-      return that.$route.query.page
-        ? Number(that.$route.query.page)
-        : 1
+      return that.$route.query.page ?
+        Number(that.$route.query.page) :
+        1
     },
     /**
      * 保存督导时间
      *
      */
-    saveSparaTime() {
+    saveSparaTime(week) {
       let that = this
+      that.savingSparaTime=true
       that.requestSparaTimeUpdate({
-        body: that.getUpdateBody()
+        body: that.getUpdateBody(week),
+        success(res) {
+          that.hadSave = true
+        },
+        complete(res){
+          that.savingSparaTime=false
+        }
       })
     },
     /**
@@ -283,18 +337,35 @@ export default {
      */
     autoCreateSparaTime: function () {
       let that = this
-      that.reuqestSparaTimeAutoCreate({
-        userId: that.dialogForm.userId
-          ? that.dialogForm.userId
-          : '',
-        teacherId: that.dialogForm.teacherId
-          ? that.dialogForm.teacherId
-          : -1,
-        end: that.selectedWeek,
-        start: that.selectedWeek,
-        success(res) {
-          that.doReuqestSpareList({userId: that.dialogForm.userId})
+      that.autoCreatingSparaTime=true
+      commonUtils.showMsgBox({
+        context: that,
+        msg: '若无课程安排，则视为空闲状态',
+        showCancelButton: true,
+        beforeClose(action, instance, done) {
+          if (action === 'confirm') {
+            that.reuqestSparaTimeAutoCreate({
+              userId: that.dialogForm.userId ?
+                that.dialogForm.userId : '',
+              teacherId: that.dialogForm.teacherId ?
+                that.dialogForm.teacherId :
+                -1,
+              end: 20,
+              start: 1,
+              success(res) {
+                that.doReuqestSpareList({
+                  userId: that.dialogForm.userId,
+                  complete(res){
+                    that.autoCreatingSparaTime=false
+                  }
+                })
+              }
+            })
+          }
+
+          done()
         }
+
       })
     },
     /**
@@ -302,11 +373,11 @@ export default {
      *
      * @returns
      */
-    getUpdateBody() {
+    getUpdateBody(week) {
       let that = this
       let body = []
       let constJson = {
-        week: that.selectedWeek,
+        week,
         uid: that.dialogForm.userId,
         cid: that.dialogForm.collegeId
       }

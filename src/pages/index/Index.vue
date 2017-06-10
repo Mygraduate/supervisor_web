@@ -5,13 +5,13 @@
     <div class="headerWrapper">
       <div class="header">
         <div class="container">
-          <h1>督导听课系统</h1>
+          <h1>教学督导平台</h1>
           <div class="welcome">
             <div class="welcome-msg">
               <img src="../../assets/iconMeWhite.png" class="welcome-icon">
               <el-dropdown @command="handleCommand">
                 <span class="el-dropdown-link">
-                  欢迎你，{{getRoleName}}
+                  欢迎{{getUserName}}，{{getRoleName}}
                 </span>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item command="logout">退出</el-dropdown-item>
@@ -23,81 +23,52 @@
       </div>
     </div>
 
-    <!--中间布局-->
-    <div class="main-cnt">
-      <div class="page-compoment page-compoment-p">
-        <div class="cc-row">
-          <!--左侧栏-->
-          <el-row class="tac left-row">
-            <el-col v-bind:span="8" class="col">
-              <el-menu :default-active="selectedMenu" class="el-menu-vertical-demo fs20">
-                <router-link :to="{name:'indexHome'}" v-if="getRoleId()===2">
-                  <el-menu-item index="indexHome">
-                    <img class="el-menu-icon index-icon" src="../../assets/iconIndexBlack.png">主页</el-menu-item>
-                </router-link>
-                <router-link :to="{name:'progressPage'}" v-if="getRoleId()===2">
-                  <el-menu-item index="progressPage">
-                    <img class="el-menu-icon index-icon" src="../../assets/iconProgressBlack.png">进度表</el-menu-item>
-                </router-link>
-                <router-link :to="{name:'referCoursePage'}" v-if="getRoleId()===2">
-                  <el-menu-item index="referCoursePage">
-                    <img class="el-menu-icon index-icon" src="../../assets/iconReferBlack.png">手动排课</el-menu-item>
-                </router-link>
-                <router-link :to="{name:'feedbackPage'}" v-if="getRoleId()===2">
-                  <el-menu-item index="feedbackPage">
-                    <img class="el-menu-icon index-icon" src="../../assets/feedback.png">听课反馈</el-menu-item>
-                </router-link>
-                <router-link :to="{name:'teacherInfoPage'}" v-if="getRoleId()===2">
-                  <el-menu-item index="teacherInfoPage">
-                    <img class="el-menu-icon index-icon" src="../../assets/iconTeachInfoBlack.png">教师信息</el-menu-item>
-                </router-link>
+    <el-row>
+      <el-col :span="4"  style="height:100vh;">
+        <el-menu :default-active="selectedMenu" class="el-menu-vertical-demo fs20" style="height:100%;">
+          <router-link :to="{name:'indexHome'}" v-if="getRoleId()===2">
+            <el-menu-item index="indexHome">
+              <img class="el-menu-icon index-icon" src="../../assets/iconIndexBlack.png">主页</el-menu-item>
+          </router-link>
+          <router-link :to="{name:'progressPage'}" v-if="getRoleId()===2">
+            <el-menu-item index="progressPage">
+              <img class="el-menu-icon index-icon" src="../../assets/iconProgressBlack.png">进度表</el-menu-item>
+          </router-link>
+          <router-link :to="{name:'referCoursePage'}" v-if="getRoleId()===2">
+            <el-menu-item index="referCoursePage">
+              <img class="el-menu-icon index-icon" src="../../assets/iconReferBlack.png">手动排课</el-menu-item>
+          </router-link>
+          <router-link :to="{name:'feedbackPage'}" v-if="getRoleId()===2">
+            <el-menu-item index="feedbackPage">
+              <img class="el-menu-icon index-icon" src="../../assets/feedback.png">听课反馈</el-menu-item>
+          </router-link>
+          <router-link :to="{name:'teacherInfoPage'}" v-if="getRoleId()===2">
+            <el-menu-item index="teacherInfoPage">
+              <img class="el-menu-icon index-icon" src="../../assets/iconTeachInfoBlack.png">教师信息</el-menu-item>
+          </router-link>
 
-                <router-link :to="{name:'userPage'}" v-if="getRoleId()===2||getRoleId()===1">
-                  <el-menu-item index="userPage">
-                    <img class="el-menu-icon index-icon" src="../../assets/iconSupervisorBlack.png">用户信息</el-menu-item>
-                </router-link>
-                <router-link :to="{name:'supervisorPage'}" v-if="getRoleId()===2||getRoleId()===3">
-                  <el-menu-item index="supervisorPage">
-                    <img class="el-menu-icon index-icon" src="../../assets/iconSupervisorBlack.png">督导信息</el-menu-item>
-                </router-link>
-                <router-link :to="{name:'settingPage'}" v-if="getRoleId()===1">
-                  <el-menu-item index="settingPage">
-                    <img class="el-menu-icon index-icon" src="../../assets/iconSettingBlack.png" >设置</el-menu-item>
-                </router-link>
-              </el-menu>
-            </el-col>
-          </el-row>
-        </div>
+          <router-link :to="{name:'userPage'}" v-if="getRoleId()===2||getRoleId()===1">
+            <el-menu-item index="userPage">
+              <img class="el-menu-icon index-icon" src="../../assets/iconSupervisorBlack.png">用户信息</el-menu-item>
+          </router-link>
+          <router-link :to="{name:'supervisorPage'}" v-if="getRoleId()===2||getRoleId()===3">
+            <el-menu-item index="supervisorPage">
+              <img class="el-menu-icon index-icon" src="../../assets/iconSupervisorBlack.png">督导信息</el-menu-item>
+          </router-link>
+          <router-link :to="{name:'settingPage'}" v-if="getRoleId()===1">
+            <el-menu-item index="settingPage">
+              <img class="el-menu-icon index-icon" src="../../assets/iconSettingBlack.png">设置</el-menu-item>
+          </router-link>
+        </el-menu>
+      </el-col>
+      <el-col :span="20" style="height:100vh;">
+        <transition v-bind:name="transitionName" mode="out-in">
+          <router-view class="view" style="height:100vh;"></router-view>
+        </transition>
+      </el-col>
 
-        <div class="cc-row-right">
-          <transition v-bind:name="transitionName" mode="out-in">
+    </el-row>
 
-            <router-view class="view"></router-view>
-          </transition>
-        </div>
-
-      </div>
-    </div>
-
-    <!--脚布局-->
-
-    <div class="footer">
-      <div class="foot-container">
-        <div class="footer-main">
-          <p class="footer-main-title">毕业项目设计</p>
-          <!--<div class="footer-main-subtitle">关于我们</div>-->
-          <div class="footer-main-subtitle"> 分工--------- Web前端：洛.曦. </div>
-          <div class="footer-main-subtitle">WebChat前端：J I E </div>
-          <div class="footer-main-subtitle">后端：小孔成像</div>
-          <div class="footer-main-subtitle">测试、文档：Eyes乀</div>
-        </div>
-
-        <div class="footer-social">
-          <span></span>
-          <i class="doc-icon-weixin elementdoc"></i>
-        </div>
-      </div>
-    </div>
 
   </div>
 </template>
@@ -107,7 +78,7 @@
 </script>
 
 <style scoped>
-.el-dropdown-link{
-  color:white !important;
+.el-dropdown-link {
+  color: white !important;
 }
 </style>

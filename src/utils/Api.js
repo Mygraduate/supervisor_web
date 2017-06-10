@@ -1,8 +1,8 @@
 /*
  * @Author: Rhymedys
  * @Date:   2017-01-31 17:40:52
- * @Last Modified by:   Rhymedys
- * @Last Modified time: 2017-05-27 08:36:48
+ * @Last Modified by: Rhymedys
+ * @Last Modified time: 2017-06-10 14:34:36
  */
 
 'use strict'
@@ -15,8 +15,7 @@ import {
 
 import Vue from 'vue'
 Vue.use(VueResource)
-
-//  配置
+ //  配置
 
 var isDebug = false
 let context = ''
@@ -92,8 +91,6 @@ const debugUrl = {
     '32255bf',
   apiArrageCreate: 'http://test.mhealth100.com/api/mock/trueExam.do?id=a9fa1419-ada9-4c1f-9d44-279c8' +
     '32255bf',
-  apiArrageCreate: 'http://test.mhealth100.com/api/mock/trueExam.do?id=a9fa1419-ada9-4c1f-9d44-279c8' +
-    '32255bf',
   apiSparaTimeOptimal: 'http://test.mhealth100.com/api/mock/trueExam.do?id=5a3ff3a6-3907-4e78-b3fe-fede6' +
     'e69f30a',
   apiTeacherListAll: 'http://test.mhealth100.com/api/mock/trueExam.do?id=49255918-3edd-4998-b2ef-b6f47' +
@@ -103,6 +100,12 @@ const debugUrl = {
   apiUserListAll: 'http://test.mhealth100.com/api/mock/trueExam.do?id=fd95b9fb-4751-4a1d-99d8-19b68' +
     'ab72651',
     apiEveluateList:'http://test.mhealth100.com/api/mock/trueExam.do?id=8919a981-0f1d-4a06-a509-f3b5696f85ad',
+  apiReferList:'http://test.mhealth100.com/api/mock/trueExam.do?id=c5cac6e1-8a47-4655-bb50-b1bd16ea9846',
+apiSendArrage:'http://test.mhealth100.com/api/mock/trueExam.do?id=c5cac6e1-8a47-4655-bb50-b1bd16ea9846',
+  apiArrageSummary:'http://test.mhealth100.com/api/mock/trueExam.do?id=cfd40b99-29ea-430a-a1d6-1982a1f28899',
+
+  apiArrageEditGroups:'http://test.mhealth100.com/api/mock/trueExam.do?id=cfd40b99-29ea-430a-a1d6-1982a1f28899',
+  apiArrageFindGroups:'http://test.mhealth100.com/api/mock/trueExam.do?id=cfd40b99-29ea-430a-a1d6-1982a1f28899',
 
 
 }
@@ -144,7 +147,14 @@ apiEveluateList:gobalUrl+'evaluate/list',
   apiSparaTimeAutoCreate: gobalUrl + 'sparetime/auto/create',
   apiSparaTimeOptimal: gobalUrl + 'sparetime/page/optimal',
   apiTeacherListAll: gobalUrl + 'teacher/list/all',
-  apiCollegeListAll: gobalUrl + 'college/list/all'
+  apiCollegeListAll: gobalUrl + 'college/list/all',
+  apiArrageCreate:gobalUrl+'arrage/create',
+  apiReferList:gobalUrl+'course/consult',
+  apiSendArrage:gobalUrl+'arrage/sent',
+  apiArrageSummary:gobalUrl+'arrage/summary',
+    apiArrageEditGroups:gobalUrl+'arrage/edit/groups',
+    apiArrageFindGroups:gobalUrl+'arrage/find/groups',
+
 }
 
 var newUrl = {}
@@ -284,7 +294,23 @@ function getUrl(e) {
     case apiEveluateList:
       result = newUrl.apiEveluateList
       break
+    case apiReferList:
+      result = newUrl.apiReferList
+      break
 
+    case apiSendArrage:
+      result = newUrl.apiSendArrage
+      break
+
+    case apiArrageSummary:
+      result = newUrl.apiArrageSummary
+      break
+    case apiArrageEditGroups:
+      result = newUrl.apiArrageEditGroups
+      break
+    case apiArrageFindGroups:
+      result = newUrl.apiArrageFindGroups
+      break
 
     default:
       break
@@ -453,6 +479,26 @@ function apiUserListAll(obj) {
 function apiEveluateList(obj) {
   doRequest(getUrl(apiEveluateList), obj)
 }
+function apiReferList(obj) {
+  doRequest(getUrl(apiReferList), obj)
+}
+function apiSendArrage(obj) {
+  doRequest(getUrl(apiSendArrage), obj)
+}
+
+
+function apiArrageSummary(obj) {
+  doRequest(getUrl(apiArrageSummary), obj)
+}
+
+
+function apiArrageEditGroups(obj) {
+  doRequest(getUrl(apiArrageEditGroups), obj)
+}
+
+function apiArrageFindGroups(obj) {
+  doRequest(getUrl(apiArrageFindGroups), obj)
+}
 
 
 
@@ -525,7 +571,7 @@ function doRequest(mUrl, obj) {
         if (res.data) {
 
           if (res.data.code === -2) {
-            alert(res.data.code)
+
             if (context.$route.name !== 'login') {
               window.location = `${location.origin}/sas/login?from=${context.$route.name}`
             }
@@ -546,7 +592,7 @@ function doRequest(mUrl, obj) {
               commonUtils.showMsg({
                 context,
                 type: 'error',
-                msg: res.data.msg ? res.data.msg : '请求错误'
+                msg: res.data.data ? res.data.data : '请求错误'
               })
             }
 
@@ -636,5 +682,11 @@ module.exports = {
   apiTeacherListAll,
   apiCollegeListAll,
   apiUserListAll,
-  apiEveluateList
+  apiEveluateList,
+  apiReferList,
+  apiSendArrage,
+  apiArrageSummary,
+apiArrageEditGroups,
+apiArrageFindGroups
+
 }

@@ -2,7 +2,7 @@
  * @Author: Rhymedys
  * @Date:   2017-02-02 16:22:21
  * @Last Modified by: Rhymedys
- * @Last Modified time: 2017-05-27 08:21:27
+ * @Last Modified time: 2017-06-04 14:57:41
  */
 
 'use strict'
@@ -44,10 +44,28 @@ export default {
       dialogType: 'ADD',
       multipleSelection: [],
       btnDeleteDisable: true,
+      updatingUser:false,
       selectedRole: 0,
       searchName: '',
       searchTitle: '',
       searchUsername: '',
+      roleSelectedList:[
+        {
+          name:'全部',
+          value:0
+        },
+                {
+          name:'督导管理员',
+          value:2
+        },
+                {
+          name:'督导员',
+          value:3
+        },        {
+          name:'教师',
+          value:4
+        }
+      ],
       rule: {
         userName: [
           {
@@ -198,6 +216,14 @@ export default {
       'requestTeacherListAll',
       'requestCollegeAll'
     ]),
+    getSynchro(item){
+      if(item.isSynchro===0){
+        return '否'
+      }else{
+        return '是'
+
+      }
+    },
     getCurrentPage() {
       let that = this
       return that.$route.query.page
@@ -240,8 +266,8 @@ export default {
     },
     handleDialogOk() {
       let that = this
-      that.dialogFormVisible = false
       let body = {}
+      that.updatingUser=true
       if (that.dialogType === 'UPDATE') {
         body = {
           id: that.dialogForm.tableId
@@ -280,6 +306,8 @@ export default {
         success: (res) => {},
         error: (res) => {},
         complete: (res) => {
+        that.dialogFormVisible = false
+        that.updatingUser=false          
           that.resetDialogForm()
         }
       }
@@ -346,7 +374,6 @@ export default {
     handleSelectedRoleChange() {
       let that = this
       let page = that.$route.query.page || 1
-      alert('handleSelectedRoleChange')
       that.handleCurrentChange(page)
     },
     handleSearch() {

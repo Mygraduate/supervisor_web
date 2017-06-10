@@ -66,7 +66,7 @@ body {
     /*width: auto;*/
     height: 100vh;
     background-color: transparent;
-    position: absolute;
+    /*position: absolute;*/
     z-index: 1;
     left: 0;
     width: 100%;

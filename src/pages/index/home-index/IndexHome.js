@@ -2,7 +2,7 @@
  * @Author: Rhymedys
  * @Date:   2017-02-02 16:22:21
  * @Last Modified by: Rhymedys
- * @Last Modified time: 2017-05-27 02:15:48
+ * @Last Modified time: 2017-06-10 14:40:55
  */
 
 'use strict'
@@ -12,7 +12,7 @@ import timeUtils from '../../../utils/TimeUtils'
 import CourseArrageTableComponment from '../../../components/CourseArrageTable'
 import AutoCreateDialogComponment from './componments/AutoCreateDialog'
 import ChangeStatusDialogComponment from './componments/ChangeStatusDialog'
-
+import ChangeArragePeopleDialogComponment from './componments/ArragePeople'
 import Vue from 'vue'
 // vuex
 import {mapState, mapGetters, mapActions, mapMutations} from 'vuex'
@@ -23,10 +23,10 @@ import * as mMutations from '../../../vuex/Mutations'
 Vue.component(CourseArrageTableComponment.name, CourseArrageTableComponment)
 Vue.component(AutoCreateDialogComponment.name, AutoCreateDialogComponment)
 Vue.component(ChangeStatusDialogComponment.name, ChangeStatusDialogComponment)
-
+Vue.component(ChangeArragePeopleDialogComponment.name, ChangeArragePeopleDialogComponment)
 export default {
-  name : 'cc-index',
-  data() {
+  name: 'cc-index',
+  data () {
     return {
       searchInput: '',
       activeTab: 'tempTable',
@@ -34,21 +34,23 @@ export default {
 
       comfirmTableResetAll: false,
       tempTableResetAll: false,
-
+      showArragePeopleDialog: false,
+      sendingArrage: false,
       comfirmTableCurrentPage: 1,
       tempTableCurrentPage: 1,
-
+      showSupervisorForm: true,
       changeStatusDialogData: {
         course: {
           name: ''
         }
       },
+      arragePeopleDialogData: {},
       showChangeStatusDialog: false,
 
       showAutoCreateDialog: false,
       autoCreateMode: 'create',
       autoCreatDialogReset: false,
-
+      updatingArragePeople: false,
       selectStatusList: [
         {
           name: '未确定',
@@ -67,38 +69,53 @@ export default {
       ]
     }
   },
-  beforeCreate : function () {
+  beforeCreate: function () {
     commonUtils.log('--Index.Vue--Lifecycle:beforeCreate')
   },
-  created : function () {
+  created: function () {
     commonUtils.log('--Index.Vue--Lifecycle:created')
     let that = this
     that.requestArrageList({})
+    setTimeout(() => {
+      let arrageSummaryStatus
+      if (that.activeTab === 'comfirmTable') {
+        arrageSummaryStatus = 1
+      } else if (that.activeTab === 'tempTable') {
+        arrageSummaryStatus = 0
+      }
+      that.requestArrageSummary({status: arrageSummaryStatus})
+    })
+    setTimeout(() => {
+      that.requestUserListAll({
+        roleId: 3,
+        cid: localStorage.getItem('loginCollegeId')
+      })
+    }, 1000)
   },
-  beforeMount : function () {
+  beforeMount: function () {
     commonUtils.log('--Index.Vue--Lifecycle:beforeMount')
   },
-  mounted : function () {
+  mounted: function () {
     commonUtils.log('--Index.Vue--Lifecycle:mounted')
   },
-  updated : function () {
+  updated: function () {
     commonUtils.log('--Index.Vue--Lifecycle:updated')
   },
-  activated : function () {
+  activated: function () {
     commonUtils.log('--Index.Vue--Lifecycle:activated')
   },
-  deactivated : function () {
+  deactivated: function () {
     commonUtils.log('--Index.Vue--Lifecycle:deactivated')
   },
-  beforeDestroy : function () {
+  beforeDestroy: function () {
     commonUtils.log('--Index.Vue--Lifecycle:beforeDestroy')
     this.resetConfirmTableListState()
   },
-  destroyed : function () {
+  destroyed: function () {
     commonUtils.log('--Index.Vue--Lifecycle:destroyed')
   },
-  computed : {
-    ...mapGetters(['getConfirmTableList', 'getConfirmTableListTotalElements']),
+  computed: {
+    ...mapGetters(['getConfirmTableList', 'getConfirmTableListTotalElements', 'getArrageSummaryList', 'getUserListAll', 'getOptimalUserList']),
 
     /**
      * 过滤0状态
@@ -110,9 +127,15 @@ export default {
       return selectStatusList.filter((value) => {
         return value.value !== 0
       })
+    },
+    getAutoCreateReplaceMode: function () {
+      if (this.getConfirmTableList && this.getConfirmTableList.length > 0) {
+        return true
+      }
+      return false
     }
   },
-  watch : {
+  watch: {
 
     /**
      * tab切换
@@ -125,9 +148,11 @@ export default {
       if (value === 'comfirmTable') {
         that.resetTempTableData()
         that.requestArrageList({status: 1})
+        that.requestArrageSummary({status: 1})
       } else if (value === 'tempTable') {
         that.resetConfirmTableData()
         that.requestArrageList({status: 0})
+        that.requestArrageSummary({status: 0})
       } else if (value === 'sendLog') {
         that.resetConfirmTableData()
         that.resetTempTableData()
@@ -143,26 +168,33 @@ export default {
       }
     }
   },
-  methods : {
+  methods: {
     ...mapMutations(['resetConfirmTableListState']),
-    ...mapActions(['requestArrageList', 'apiRequestArrageDelete', 'apiRequestArrageUpdate', 'apiArrageAutoCreate']),
+    ...mapActions([
+      'requestArrageList',
+      'requestSendArrage',
+      'apiRequestArrageDelete',
+      'apiRequestArrageUpdate',
+      'apiArrageAutoCreate',
+      'requestArrageSummary',
+      'requestUserListAll',
+      'requestSparaTimeOptimal',
+      'requestUpdateArrageEditGroups',
+      'requestArrageFindGroups'
+    ]),
     /**
      *
      * 临时表、确认表页面指示器改变
      * @param {any} page
      */
-    tableCurrentChange({page, searchTeacherInput, selectedWeek, selectedDay, selectedStatus}) {
+    tableCurrentChange ({page, searchTeacherInput, selectedWeek, selectedDay, selectedStatus}) {
       let that = this
-      alert(page)
+
       let defaultStatus = 0
       if (that.activeTab === 'comfirmTable') {
-        alert(page)
-
         defaultStatus = 1
         that.comfirmTableCurrentPage = page
       } else if (that.activeTab === 'tempTable') {
-        alert(page)
-
         that.tempTableCurrentPage = page
       }
       that.requestArrageList({
@@ -313,17 +345,17 @@ export default {
      * 确认修改状态
      *
      */
-    updateItemStatus: function ({itemNewStatus}) {
+    updateItemStatus: function (index, {id}) {
       let that = this
       let body = [
         {
-          id: that.changeStatusDialogData.id,
-          status: itemNewStatus
+          id,
+          status: 1
         }
       ]
       that.apiRequestArrageUpdate({
         body,
-        complete(res) {
+        complete (res) {
           that.showChangeStatusDialog = false
         }
       })
@@ -362,7 +394,7 @@ export default {
     }) {
       let that = this
       let {apiArrageAutoCreate, autoCreateMode} = that
-      if (typeof(apercent) !== 'number' || typeof(dayListen) !== 'number' || typeof(endWeek) !== 'number' || typeof(maxPeople) !== 'number' || typeof(minPeople) !== 'number' || typeof(startDay) !== 'number' || typeof(startWeek) !== 'number' || typeof(total) !== 'number' || typeof(weekListen) !== 'number' || maxPeople < minPeople || (!apercent > 0) || startWeek > endWeek) {
+      if (typeof (apercent) !== 'number' || typeof (dayListen) !== 'number' || typeof (endWeek) !== 'number' || typeof (maxPeople) !== 'number' || typeof (minPeople) !== 'number' || typeof (startDay) !== 'number' || typeof (startWeek) !== 'number' || typeof (total) !== 'number' || typeof (weekListen) !== 'number' || maxPeople < minPeople || (!apercent > 0) || startWeek > endWeek) {
         commonUtils.showMsg({context: that, msg: '配置错误，请重新配置后再确定'})
         return
       }
@@ -378,14 +410,127 @@ export default {
         startWeek,
         total,
         weekListen,
-        success(res) {
+        success (res) {
           that.autoCreateMode = 'replace'
         },
-        complete(res) {
+        complete (res) {
           that.showAutoCreateDialog = false
         }
       })
+    },
+    exportConfirmTable: function () {
+      window.open(`${window.location.protocol}//${window.location.host}/sas/api/excel/export/arrage?cid=${Number(localStorage.getItem('loginCollegeId'))}`)
+    },
+    sendItemArrage: function (index, row) {
+      let that = this
+      that.requestSendArrage({
+        body: [row.id
+            ? row.id
+            : null]
+      })
+    },
+    sendArrageList: function ({setlectedItemsList}) {
+      let that = this
+      let arrageIdList = setlectedItemsList.map((element) => {
+        return element.id
+      })
+      that.sendingArrage = true
+      that.requestSendArrage({
+        body: arrageIdList,
+        complete (res) {
+          that.sendingArrage = false
+        }
+      })
+    },
+    openStatisticsDialog: function () {
+      let status
+      if (this.activeTab === 'comfirmTable') {
+        status = 1
+      } else if (this.activeTab === 'tempTable') {
+        status = 0
+      }
+      this.requestArrageSummary({status})
+      this.showSupervisorForm = false
+      this.showArragePeopleDialog = true
+    },
+    openArragePeopleDialog: function (index, item, searchObj) {
+      let that = this
+      if (that.activeTab === 'comfirmTable') {
+        this.requestArrageSummary({status: 1})
+      } else if (that.activeTab === 'tempTable') {
+        this.requestArrageSummary({status: 0})
+      }
+      that.requestSparaTimeOptimal({
+        collegeId: item.cid
+          ? item.cid
+          : null,
+        week: item.week
+          ? item.week
+          : null,
+        day: item.day
+          ? item.day
+          : null,
+        scope: item.scope
+          ? item.scope
+          : null
+      })
+
+      Object.assign(item, {
+        requestArrageFindGroups: that.requestArrageFindGroups
+      }, searchObj)
+      that.showSupervisorForm = true
+      that.arragePeopleDialogData = item
+      that.showArragePeopleDialog = true
+    },
+    closeArragePeopleDialog: function () {
+      this.showArragePeopleDialog = false
+      this.arragePeopleDialogData = {}
+    },
+    updateArrageEditGroups: function ({groupsValue, dialogData}) {
+      let that = this
+
+      if (that.showSupervisorForm) {
+        that.updatingArragePeople = true
+        that.requestUpdateArrageEditGroups({
+          params: {
+            id: dialogData.id
+              ? dialogData.id
+              : null
+          },
+          body: groupsValue,
+          success (res) {
+            let status
+            if (that.activeTab === 'comfirmTable') {
+              status = 1
+            } else if (that.activeTab === 'tempTable') {
+              status = 0
+            }
+
+            that.requestArrageList({
+              status,
+              week: dialogData.selectedWeek
+                ? dialogData.selectedWeek
+                : null,
+              day: dialogData.selectedDay
+                ? dialogData.selectedDay
+                : null,
+              teacher: dialogData.searchTeacherInput
+                ? dialogData.searchTeacherInput
+                : null
+            })
+
+            that.closeArragePeopleDialog()
+          },
+          complete (res) {
+            that.updatingArragePeople = false
+          }
+
+        })
+      } else {
+        that.closeArragePeopleDialog()
+      }
     }
+
   }
 
 }
